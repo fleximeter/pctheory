@@ -21,8 +21,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-from pctheory import pitch, transformations, util
-import music21
+from . import pitch, transformations, util
 import numpy as np
 import random
 
@@ -370,26 +369,6 @@ def invert(pset: set) -> set:
         mod = next(iter(pset)).mod
         for p in pset:
             pset2.add(pitch.Pitch(p.p * -1, mod))
-    return pset2
-
-
-def m21_make_pset(item) -> set:
-    """
-    Makes a pset from a music21 object
-    :param item: A music21 object
-    :return: A pset
-    *Compatible only with chromatic psegs
-    """
-    pset2 = set()
-    if type(item) == music21.note.Note:
-        pset2.add(pitch.Pitch(item.pitch.midi - 60, 12))
-    elif type(item) == music21.pitch.Pitch:
-        pset2.add(pitch.Pitch(item.pitch.midi - 60, 12))
-    elif type(item) == music21.chord.Chord:
-        for p in item.pitches:
-            pset2.add(pitch.Pitch(p.midi - 60, 12))
-    else:
-        raise TypeError("Unsupported music21 type")
     return pset2
 
 

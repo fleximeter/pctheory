@@ -291,7 +291,7 @@ def generate_random_pcseg_from_pcset(pcset: set):
     Generates a random pcseg from a pcset
     :param pcset: A pcset
     :return: A pcseg
-    *Compatible with all PitchClass modulos    
+    *Compatible with all PitchClass modulos
     """
     pcseg = []
     if len(pcset) > 0:
@@ -391,7 +391,7 @@ def imb_n(pcseg: list, n: int):
     :param pcseg: The pcseg
     :param n: The cardinality of imbrication
     :return: The IMB_n
-    *Compatible with all PitchClass modulos        
+    *Compatible with all PitchClass modulos
     """
     imb = set()
     scs = []
@@ -410,7 +410,7 @@ def invert(pcseg: list):
     Inverts a pcseg
     :param pcseg: The pcseg
     :return: The inverted pcseg
-    *Compatible with all PitchClass modulos    
+    *Compatible with all PitchClass modulos
     """
     pcseg2 = []
     if len(pcseg) > 0:
@@ -594,7 +594,7 @@ def multiply_order(pcseg: list, n: int):
     :param pcseg: The pcseg
     :param n: The multiplier
     :return: The order-multiplied pcseg
-    *Compatible with all PitchClass modulos    
+    *Compatible with all PitchClass modulos
     """
     pcseg2 = []
     if len(pcseg) > 0 and n > 0:
@@ -610,7 +610,7 @@ def ormap(row: list, ormap: dict):
     :param row: A row
     :param ormap:
     :return: The ORMAP mapping for the row
-    *Compatible with all PitchClass modulos    
+    *Compatible with all PitchClass modulos
     """
     mapping = []
     for item in row:
@@ -623,7 +623,7 @@ def prot(pcseg: list):
     Generates the protocol pairs for a pcseg
     :param pcseg: A pcseg
     :return: A set of protocol pairs
-    *Compatible with all PitchClass modulos    
+    *Compatible with all PitchClass modulos
     """
     pp = set()
     for i in range(len(pcseg)):
@@ -637,7 +637,7 @@ def retrograde(pcseg: list):
     Retrogrades a pcseg
     :param pcseg: The pcseg
     :return: The retrograded pcseg
-    *Compatible with all PitchClass modulos    
+    *Compatible with all PitchClass modulos
     """
     pcseg2 = []
     if len(pcseg) > 0:
@@ -653,7 +653,7 @@ def rotate(pcseg: list, n: int):
     :param pcseg: The pcseg
     :param n: The index of rotation
     :return: The rotated pcseg
-    *Compatible with all PitchClass modulos    
+    *Compatible with all PitchClass modulos
     """
     pcseg2 = []
     if len(pcseg) > 0:
@@ -718,7 +718,7 @@ def transpose(pcseg: list, n: int):
     :param pcseg: The pcseg
     :param n: The index of transposition
     :return: The transposed pcseg
-    *Compatible with all PitchClass modulos    
+    *Compatible with all PitchClass modulos
     """
     pcseg2 = []
     if len(pcseg) > 0:
@@ -734,7 +734,7 @@ def transpositional_combination(pcseg1: list, pcseg2: list):
     :param pcseg1: A pcseg
     :param pcseg2: A pcseg
     :return: The TC pcset
-    *Compatible with all PitchClass modulos    
+    *Compatible with all PitchClass modulos
     """
     pcseg3 = []
     if len(pcseg1) > 0 and len(pcseg2) > 0:

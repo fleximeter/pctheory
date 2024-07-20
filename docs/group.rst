@@ -5,6 +5,14 @@ pctheory.group
 
     Represents a group of operators. Only compatible with mod 12 and mod 24 systems.
 
+    .. py:property:: name
+
+        Represents the name of the group, as a ``str``
+
+    .. py:property:: utos
+
+        Gets the set of unordered tone operators (UTOs, traditionally "twelve-tone operators" for mod-12) in the group.
+
     .. py:method:: __init__(self, utos: list = None, mod: int = 12)
 
         Creates an ``OperatorGroup``
@@ -46,14 +54,6 @@ pctheory.group
 
         :returns: The group name
         :rtype: str
-
-    .. py:property:: name
-
-        Represents the name of the group, as a ``str``
-
-    .. py:property:: utos
-
-        Gets the set of unordered tone operators (UTOs, traditionally "twelve-tone operators" for mod-12) in the group.
 
     .. py:method:: get_orbits(self)
 

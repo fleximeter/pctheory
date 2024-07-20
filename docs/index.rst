@@ -22,11 +22,15 @@ Because ``pctheory`` is a Python module, it is easy to write simple programs in 
 
 Prerequisites
 -------------
-``pctheory`` requires Python 3.10 or newer, as well as the additional modules ``networkx``, ``numpy``, ``pandas``, and ``pyvis``.
+``pctheory`` requires Python 3.10 or newer, as well as the additional modules ``networkx``, ``numpy``, ``pyvis``, and ``regex``.
 
 Installation
 ------------
-``pctheory`` is a Python package and can be installed with the command pip install ``pctheory`` from the terminal on your computer (Command Prompt or PowerShell on Windows, Terminal on Linux or macOS). Note that you need Python 3.10 or newer. If you are running macOS, you will need to install Python 3.x, and you can do that by following the instructions here. You need to have pip installed – if you are running Linux and need to install pip, you can find instructions here.
+``pctheory`` is a Python package and can be installed with the command
+
+.. code-block:: console
+
+    (.venv) $ pip install pctheory
 
 Copyright and license
 ---------------------

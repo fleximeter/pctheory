@@ -138,6 +138,8 @@ class OperatorGroup:
                         u.remove(tr)
             orbits.append(orbit)
 
+        return orbits
+
     def left_coset(self, uto):
         """
         Gets a left coset of the group

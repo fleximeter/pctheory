@@ -65,3 +65,13 @@ Straus, Joseph. *Introduction to Post-Tonal Theory*. Fourth edition. New York: W
    :maxdepth: 2
    :caption: Contents:
 
+   contour
+   group
+
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`

@@ -67,7 +67,17 @@ Straus, Joseph. *Introduction to Post-Tonal Theory*. Fourth edition. New York: W
 
    contour
    group
-
+   pcarray
+   pcseg
+   pcset
+   pitch
+   pseg
+   pset
+   set_complex
+   tables
+   transformations
+   util
+   
 
 Indices and tables
 ==================

@@ -851,7 +851,7 @@ def is_all_combinatorial_hexachord(pcset: set):
     Whether or not a pcset is an all-combinatorial hexachord
     :param pcset: A pcset
     :return: True or False
-    *Only compatible with mod 12 SetClasses    
+    *Only compatible with mod 12 SetClasses
     """
     sc = SetClass(pcset)
     if sc.name_prime in name_tables["allCombinatorialHexachords"]:

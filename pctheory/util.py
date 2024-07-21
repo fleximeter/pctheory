@@ -22,7 +22,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
 
-def factor(n):
+def factor(n) -> list:
     """
     Factors a positive integer
     :param n: An integer
@@ -45,7 +45,7 @@ def factor(n):
     return factors
 
 
-def lcm(integers):
+def lcm(integers) -> int:
     """
     Computes the LCM of a list of positive integers
     :param integers: A list of positive integers
@@ -84,7 +84,7 @@ def lcm(integers):
     return multiple
 
 
-def map_to_chromatic(scale_map, sequence):
+def map_to_chromatic(scale_map, sequence) -> list:
     """
     Maps one sequence of items to another sequence of items. This is useful for doing 
     things like mapping scale degrees 0-6 to actual chromatic pitches. You only need
@@ -103,7 +103,7 @@ def map_to_chromatic(scale_map, sequence):
     return sequence2
 
 
-def norgard(n: int):
+def norgard(n: int) -> list:
     """
     Generates the first n numbers of OEIS A004718 (Per Nørgård's infinity series)
     :param n: The number of terms to compute

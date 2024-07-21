@@ -21,7 +21,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-from . import pitch
+from .pitch import PitchClass
 
 
 class OTO:
@@ -145,8 +145,8 @@ class OTO:
                     new_item.append(self.transform(item2))
                 elif t == set:
                     new_item.append(self.transform(item2))
-                elif t == pitch.PitchClass:
-                    new_item.append(pitch.PitchClass(item2.pc * self._oto[2] + self._oto[0], item2.mod))
+                elif t == PitchClass:
+                    new_item.append(PitchClass(item2.pc * self._oto[2] + self._oto[0], item2.mod))
                 else:
                     raise ArithmeticError("Cannot transform a type other than a PitchClass.")
             if self._oto[1]:
@@ -159,8 +159,8 @@ class OTO:
                     new_item.add(self.transform(item2))
                 elif t == set:
                     new_item.add(self.transform(item2))
-                elif t == pitch.PitchClass:
-                    new_item.append(pitch.PitchClass(item2.pc * self._oto[2] + self._oto[0], item2.mod))
+                elif t == PitchClass:
+                    new_item.append(PitchClass(item2.pc * self._oto[2] + self._oto[0], item2.mod))
                 else:
                     raise ArithmeticError("Cannot transform a type other than a PitchClass.")
         else:
@@ -278,7 +278,7 @@ class UTO:
             del int_list[0]
         return cycles
 
-    def inverse(self, mod: int = 12) -> UTO:
+    def inverse(self, mod: int = 12) -> 'UTO':
         """
         Gets the inverse of the UTO
         :param mod: The number of possible pcs in the system
@@ -293,8 +293,8 @@ class UTO:
         :return: The transformed item
         """
         t = type(item)
-        if t == pitch.PitchClass:
-            return pitch.PitchClass(item.pc * self._uto[1] + self._uto[0], item.mod)
+        if t == PitchClass:
+            return PitchClass(item.pc * self._uto[1] + self._uto[0], item.mod)
         else:
             new_item = t()
             if t == set:

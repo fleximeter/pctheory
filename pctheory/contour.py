@@ -22,12 +22,12 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
 
-def com(a: int, b: int):
+def com(a: int, b: int) -> int:
     """
-    The COM function for two cps
-    :param a: A cp
-    :param b: A cp
-    :return: 1 if a < b, 0 if a == b, -1 if a > b
+    The COM function for two contour pitches. Returns 1 if a < b, 0 if a == b, -1 if a > b.
+    :param a: A contour pitch
+    :param b: A contour pitch
+    :return: The COM result
     """
     if a < b:
         return 1
@@ -37,9 +37,9 @@ def com(a: int, b: int):
         return -1
 
 
-def com_mx(cseg1: list, cseg2: list):
+def com_mx(cseg1: list, cseg2: list) -> list:
     """
-    Generates a COM matrix for two csegs
+    Generates a COM matrix for two contour pitch segments.
     :param cseg1: A cseg
     :param cseg2: A cseg
     :return: The COM matrix
@@ -53,9 +53,9 @@ def com_mx(cseg1: list, cseg2: list):
     return mx
 
 
-def invert(cseg: list):
+def invert(cseg: list) -> list:
     """
-    Inverts a cseg
+    Inverts a contour pitch segment.
     :param cseg: The cseg
     :return: The inverted cseg
     """
@@ -66,9 +66,9 @@ def invert(cseg: list):
     return cseg2
 
 
-def retrograde(cseg: list):
+def retrograde(cseg: list) -> list:
     """
-    Retrogrades a cseg
+    Retrogrades a contour pitch segment.
     :param cseg: The cseg
     :return: The retrograded cseg
     """
@@ -77,9 +77,9 @@ def retrograde(cseg: list):
     return cseg2
 
 
-def rotate(cseg: list, n: int):
+def rotate(cseg: list, n: int) -> list:
     """
-    Rotates a cseg
+    Rotates a contour pitch segment.
     :param cseg: The cseg
     :param n: The index of rotation
     :return: The rotated cseg
@@ -92,9 +92,9 @@ def rotate(cseg: list, n: int):
     return cseg2
 
 
-def simplify(cseg: list):
+def simplify(cseg: list) -> list:
     """
-    Simplifies a cseg
+    Simplifies a contour pitch segment.
     :param cseg: A cseg
     :return: A simplified form of the cseg
     """

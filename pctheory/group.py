@@ -22,7 +22,9 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
 from queue import Queue
-from . import pitch, transformations
+from . import transformations
+from .transformations import UTO
+from .pitch import PitchClass
 
 
 class OperatorGroup:
@@ -31,8 +33,8 @@ class OperatorGroup:
     """
     def __init__(self, utos: list = None, mod: int = 12):
         """
-        Creates an OperatorGroup
-        :param utos: TTOs
+        Creates an OperatorGroup.
+        :param utos: UTOs
         :param mod: The number of pcs in the system of the group (chromatic: 12, microtonal: 24)
         """
         self._MNUM_12 = {1, 5, 7, 11}
@@ -47,7 +49,7 @@ class OperatorGroup:
         if utos is not None:
             self.load_utos(utos)
 
-    def __contains__(self, uto: transformations.UTO):
+    def __contains__(self, uto: UTO):
         return uto in self._utos
 
     def __iter__(self):
@@ -64,9 +66,9 @@ class OperatorGroup:
         return self.name
 
     @property
-    def name(self):
+    def name(self) -> str:
         """
-        Gets the group name
+        Gets the group name.
         :return: The group name
         """
         group_name = "G"
@@ -103,24 +105,24 @@ class OperatorGroup:
         return group_name
 
     @property
-    def utos(self):
+    def utos(self) -> set:
         """
         The set of UTOs in the group
         :return: The set of UTOs
         """
         return self._utos
 
-    def get_orbits(self):
+    def get_orbits(self) -> list:
         """
-        Gets the orbits of the group
+        Gets the orbits of the group.
         :return: The orbits, as a list of sets
         """
         orbits = []
         u = None
         if self._num_pcs == 12:
-            u = {pitch.PitchClass(i, 12) for i in range(self._num_pcs)}
+            u = {PitchClass(i, 12) for i in range(self._num_pcs)}
         elif self._num_pcs == 24:
-            u = {pitch.PitchClass(i, 24) for i in range(self._num_pcs)}
+            u = {PitchClass(i, 24) for i in range(self._num_pcs)}
         while len(u) > 0:
             orbit = set()
             q = Queue()
@@ -140,9 +142,9 @@ class OperatorGroup:
 
         return orbits
 
-    def left_coset(self, uto):
+    def left_coset(self, uto) -> list:
         """
-        Gets a left coset of the group
+        Gets a left coset of the group.
         :param uto: A UTO
         :return: The left coset
         """
@@ -154,9 +156,8 @@ class OperatorGroup:
 
     def load_utos(self, utos: list):
         """
-        Loads TTOs into the group
-        :param utos: TTOs
-        :return:
+        Loads UTOs into the group.
+        :param utos: UTOs
         """
         self._utos = set()
         for uto in utos:
@@ -181,9 +182,9 @@ class OperatorGroup:
         for li in self._operators:
             li.sort()
 
-    def right_coset(self, uto):
+    def right_coset(self, uto: UTO) -> list:
         """
-        Gets a right coset of the group
+        Gets a right coset of the group.
         :param uto: A UTO
         :return: The right coset
         """

@@ -21,9 +21,10 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-import networkx
+from networkx import DiGraph
 import pyvis
-from . import pitch, tables, transformations
+from . import tables, transformations
+from .pitch import PitchClass
 import numpy as np
 import re
 
@@ -33,11 +34,11 @@ name_tables = tables.create_tables_sc12()
 
 class SetClass:
     """
-    Represents a pc-set-class
+    Represents a pc-set-class.
     """
-    def __init__(self, pcset=None, pc_mod: int=12):
+    def __init__(self, pcset=None, pc_mod: int = 12):
         """
-        Creates a SetClass
+        Creates a SetClass.
         :param pcset: A pcset to initialize the SetClass
         """
         if pcset is not None and len(pcset) > 0:
@@ -104,9 +105,9 @@ class SetClass:
             return self._name_prime
     
     @property
-    def derived_core(self):
+    def derived_core(self) -> list:
         """
-        Gets derived core associations
+        Gets derived core associations.
         :return: The derived core associations (or None if not derived core)
         """
         global name_tables
@@ -116,7 +117,7 @@ class SetClass:
             return None
 
     @property
-    def dsym(self):
+    def dsym(self) -> int:
         """
         Gets the degree of symmetry of the set-class.
         :return: The degree of symmetry
@@ -124,25 +125,25 @@ class SetClass:
         return self._dsym
 
     @property
-    def ic_vector(self):
+    def ic_vector(self) -> list:
         """
-        Gets the IC vector
+        Gets the IC vector.
         :return: The IC vector
         """
         return self._ic_vector
 
     @property
-    def ic_vector_long(self):
+    def ic_vector_long(self) -> list:
         """
-        Gets the IC vector in long format
+        Gets the IC vector in long format.
         :return: The IC vector in long format
         """
         return self._ic_vector_long
 
     @property
-    def ic_vector_str(self):
+    def ic_vector_str(self) -> str:
         """
-        Gets the IC vector as a string
+        Gets the IC vector as a string.
         :return: The IC vector
         """
         global name_tables
@@ -156,9 +157,9 @@ class SetClass:
             return str(self._ic_vector)
 
     @property
-    def ic_vector_long_str(self):
+    def ic_vector_long_str(self) -> str:
         """
-        Gets the IC vector in long format as a string
+        Gets the IC vector in long format as a string.
         :return: The IC vector in long format
         """
         global name_tables
@@ -172,9 +173,9 @@ class SetClass:
             return str(self._ic_vector)
 
     @property
-    def is_z_relation(self):
+    def is_z_relation(self) -> bool:
         """
-        Whether or not this set-class is Z-related to another set-class
+        Whether or not this set-class is Z-related to another set-class.
         :return: A boolean
         """
         if self._name_forte is not None and "Z" in self._name_forte:
@@ -182,57 +183,57 @@ class SetClass:
         return False
     
     @property
-    def mod(self):
+    def mod(self) -> int:
         """
-        Gets the modulo for PCs in this SetClass
+        Gets the modulo for PCs in this SetClass.
         :return: The modulo
         """
         return self._NUM_PC
 
     @property
-    def name_carter(self):
+    def name_carter(self) -> str:
         """
-        Gets the Carter name for a set-class
+        Gets the Carter name for a set-class.
         :return: The Carter name
         """
         return self._name_carter
 
     @property
-    def name_forte(self):
+    def name_forte(self) -> str:
         """
-        Gets the Forte name for a set-class
+        Gets the Forte name for a set-class.
         :return: The Forte name
         """
         return self._name_forte
 
     @property
-    def name_morris(self):
+    def name_morris(self) -> str:
         """
-        Gets the Morris name for a set-class
+        Gets the Morris name for a set-class.
         :return: The Morris name
         """
         return self._name_morris
 
     @property
-    def name_prime(self):
+    def name_prime(self) -> str:
         """
-        Gets the prime-form name (Rahn) for a set-class
+        Gets the prime-form name (Rahn) for a set-class.
         :return: The prime-form name
         """
         return self._name_prime
 
     @property
-    def num_forte(self):
+    def num_forte(self) -> int:
         """
-        Get the number part of the Forte name
+        Get the number part of the Forte name.
         :return: The number part of the Forte name
         """
         return self._num_forte
 
     @property
-    def pcset(self):
+    def pcset(self) -> set:
         """
-        Gets the pcset prime form
+        Gets the pcset prime form.
         :return: The pcset prime form
         """
         return self._pcset
@@ -240,13 +241,13 @@ class SetClass:
     @pcset.setter
     def pcset(self, value):
         """
-        Updates the pcset prime form based on an existing pcset or pcseg
+        Updates the pcset prime form based on an existing pcset or pcseg.
         :param value: The new pcset or pcseg
         :return:
         """
         if type(value) == set or type(value) == list:
             for item in value:
-                if type(item) != pitch.PitchClass:
+                if type(item) != PitchClass:
                     raise TypeError("Cannot import sets into a SetClass if they are not composed exclusively of PitchClass objects.")
                 elif item.mod != self.mod:
                     raise ArithmeticError(f"Cannot import sets into a SetClass with a different PitchClass modulo. This SetClass has modulo {self.mod}. You tried to import with a modulo of {item.mod}.")
@@ -256,9 +257,9 @@ class SetClass:
             raise TypeError("Cannot import types other than sets and lists into a SetClass.")
 
     @property
-    def weight_right(self):
+    def weight_right(self) -> bool:
         """
-        Whether or not to weight from the right
+        Whether or not to weight from the right.
         :return: A Boolean
         """
         return self._weight_right
@@ -266,7 +267,7 @@ class SetClass:
     @weight_right.setter
     def weight_right(self, value: bool):
         """
-        Whether or not to weight from the right
+        Whether or not to weight from the right.
         :param value: A Boolean
         :return:
         """
@@ -276,7 +277,7 @@ class SetClass:
     @staticmethod
     def calculate_prime_form(pcset: set, weight_from_right: bool = True, pc_mod: int=12) -> set:
         """
-        Calculates the prime form of a pcset
+        Calculates the prime form of a pcset.
         :param pcset: The pcset
         :param weight_from_right: Whether or not to pack from the right
         :param pc_mod: The PitchClass mod value to use 
@@ -325,13 +326,13 @@ class SetClass:
 
             # Create pcset
             for pc in prime_list:
-                prime_set.add(pitch.PitchClass(pc, pc_mod))
+                prime_set.add(PitchClass(pc, pc_mod))
 
         return prime_set
 
     def contains_abstract_subset(self, sc) -> bool:
         """
-        Determines if a set-class is an abstract subset of this set-class
+        Determines if a set-class is an abstract subset of this set-class.
         :param sc: A set-class
         :return: A boolean
         """
@@ -350,9 +351,9 @@ class SetClass:
                     return True
             return False
 
-    def get_abstract_complement(self) -> SetClass:
+    def get_abstract_complement(self) -> 'SetClass':
         """
-        Gets the abstract complement of the SetClass
+        Gets the abstract complement of the SetClass.
         :return: The abstract complement SetClass
         """
         complement_set_class = SetClass(pc_mod=self._NUM_PC)
@@ -382,7 +383,7 @@ class SetClass:
 
     def get_abstract_subset_classes(self) -> set:
         """
-        Gets a set of subset-classes contained in this SetClass
+        Gets a set of subset-classes contained in this SetClass.
         :return:
         """
         subset_pcsets = subsets(self._pcset)
@@ -393,7 +394,7 @@ class SetClass:
 
     def get_partition2_subset_classes(self) -> set:
         """
-        Gets a set of set-class partitions of this SetClass
+        Gets a set of set-class partitions of this SetClass.
         :return:
         """
         p2 = partitions2(self._pcset)
@@ -405,7 +406,7 @@ class SetClass:
     @staticmethod
     def get_set_classes12(cardinalities: list=None) -> list:
         """
-        Gets the chromatic set-classes
+        Gets the chromatic set-classes.
         :param cardinalities: A list of cardinalities if you don't want the entire list of 224 set-classes
         :return: A list of the chromatic set-classes
         """
@@ -423,9 +424,9 @@ class SetClass:
                 set_classes.append(sc)
         return set_classes
 
-    def get_z_relation(self) -> SetClass:
+    def get_z_relation(self) -> 'SetClass':
         """
-        Gets the Z-relation of the SetClass
+        Gets the Z-relation of the SetClass.
         :return: The Z-relation of the SetClass
         """
         if self._NUM_PC != 12:
@@ -440,7 +441,7 @@ class SetClass:
 
     def is_all_combinatorial_hexachord(self) -> bool:
         """
-        Whether or not the SetClass is an all-combinatorial hexachord
+        Whether or not the SetClass is an all-combinatorial hexachord.
         :return: True or False
         """
         if self._name_prime in name_tables["allCombinatorialHexachords"] and self._NUM_PC == 12:
@@ -473,7 +474,7 @@ class SetClass:
 
     def load_from_name(self, name: str):
         """
-        Loads a set-class from a prime-form, Morris, or Forte name
+        Loads a set-class from a prime-form, Morris, or Forte name.
         :param name: The name
         """
         global name_tables
@@ -508,7 +509,7 @@ class SetClass:
                 raise Exception("Invalid set-class name.")
             
             prime_form_chars = [c for c in text_cleaner.sub('', prime_form_name)]
-            pcset = set([pitch.PitchClass(name_tables["hexToInt"][pn], self._NUM_PC) for pn in prime_form_chars])
+            pcset = set([PitchClass(name_tables["hexToInt"][pn], self._NUM_PC) for pn in prime_form_chars])
             self.pcset = pcset
             if self.name_prime != f"[{text_cleaner.sub('', prime_form_name)}]":
                 raise Exception("Invalid set-class name.")
@@ -516,7 +517,7 @@ class SetClass:
         elif self._NUM_PC <= 16 and low_mod_prime_form_matcher.search(name):
             prime_form_name = text_cleaner.sub('', name)
             prime_form_chars = [c for c in prime_form_name]
-            pcset = set([pitch.PitchClass(name_tables["hexToInt"][pn], self._NUM_PC) for pn in prime_form_chars])
+            pcset = set([PitchClass(name_tables["hexToInt"][pn], self._NUM_PC) for pn in prime_form_chars])
             self.pcset = pcset
             if self.name_prime != f"[{text_cleaner.sub('', name)}]":
                 raise Exception("Invalid set-class name.")
@@ -524,7 +525,7 @@ class SetClass:
         elif self._NUM_PC > 16:
             name = text_cleaner(name)
             name = name.split(",")
-            pcset = set([pitch.PitchClass(int(chunk), self._NUM_PC) for chunk in name])
+            pcset = set([PitchClass(int(chunk), self._NUM_PC) for chunk in name])
             self.pcset = pcset
         
         else:
@@ -532,7 +533,7 @@ class SetClass:
 
     def _make_names(self):
         """
-        Makes the names for the set-class
+        Makes the names for the set-class.
         :return:
         """
         global name_tables
@@ -586,7 +587,7 @@ class SetClass:
     @staticmethod
     def _weight_from_right(pclists: list, pc_mod: int=12):
         """
-        Weights pclists from the right
+        Weights pclists from the right.
         :param pclists: Pclists
         :param pc_mod: The PitchClass mod value to use 
         :return: The most weighted form
@@ -616,7 +617,7 @@ class SetClass:
     @staticmethod
     def _weight_left(pclists: list, pc_mod: int=12):
         """
-        Weights pclists left
+        Weights pclists left.
         :param pclists: Pclists
         :param pc_mod: The PitchClass mod value to use 
         :return: The most weighted form
@@ -662,7 +663,7 @@ class SetClass:
 
 def get_all_combinatorial_hexachord(name: str) -> SetClass:
     """
-    Gets an all-combinatorial hexachord (ACH) by name (A-F)
+    Gets an all-combinatorial hexachord (ACH) by name (A-F).
     :param name: The name of the hexachord (A-F)
     :return: The hexachord set-class
     *Only produces mod 12 SetClasses
@@ -674,7 +675,7 @@ def get_all_combinatorial_hexachord(name: str) -> SetClass:
 
 def get_complement(pcset: set) -> set:
     """
-    Gets the complement of a pcset
+    Gets the complement of a pcset.
     :param pcset: A pcset
     :return: The complement pcset
     *Compatible with all PitchClass modulos
@@ -683,13 +684,13 @@ def get_complement(pcset: set) -> set:
     if len(pcset) > 0:
         mod = next(iter(pcset)).mod
         for i in range(mod):
-            universal.add(pitch.PitchClass(i, mod))
+            universal.add(PitchClass(i, mod))
     return universal - pcset
 
 
 def get_complement_map_utos(pcset: set) -> set:
     """
-    Gets all UTOs that map a pcset into its complement
+    Gets all UTOs that map a pcset into its complement.
     :param pcset: A pcset
     :return: A set of UTOs
     *Compatible with PitchClasses mod 12 and 24
@@ -744,7 +745,7 @@ def get_complement_map_utos(pcset: set) -> set:
 
 def get_corpus(pcset: set) -> set:
     """
-    Gets all transformations of a provided pcset
+    Gets all transformations of a provided pcset.
     :param pcset: A pcset
     :return: A set of all transformations of the pcset
     *Compatible with all PitchClass modulos
@@ -760,14 +761,14 @@ def get_corpus(pcset: set) -> set:
 
 def get_self_map_utos(pcset: set) -> set:
     """
-    Gets all UTOs that map a pcset into itself
+    Gets all UTOs that map a pcset into itself.
     :param pcset: A pcset
     :return: A set of UTOs
     *Compatible with PitchClasses mod 12 and 24
     """
     utos = set()
     t = type(next(iter(pcset)))
-    if t == pitch.PitchClass12:
+    if t == PitchClass:
         uto = transformations.get_utos12()
         for i in range(12):
             tx = uto[f"T{i}"].transform(pcset)
@@ -819,7 +820,7 @@ def convert_to_pcset12(pcset: set) -> set:
     :param args: A microtonal pcset (mod 24)
     :return: A chromatic pcset (mod 12)
     """
-    return {pitch.PitchClass(pc.pc // 2, 12) for pc in pcset}
+    return {PitchClass(pc.pc // 2, 12) for pc in pcset}
 
 
 def convert_to_pcset24(pcset: set) -> set:
@@ -828,12 +829,12 @@ def convert_to_pcset24(pcset: set) -> set:
     :param args: A chromatic pcset (mod 12)
     :return: A microtonal pcset (mod 24)
     """
-    return {pitch.PitchClass(pc.pc * 2, 24) for pc in pcset}
+    return {PitchClass(pc.pc * 2, 24) for pc in pcset}
     
 
 def invert(pcset: set) -> set:
     """
-    Inverts a pcset
+    Inverts a pcset.
     :param pcset: The pcset
     :return: The inverted pcset
     *Compatible with all PitchClass modulos
@@ -841,13 +842,13 @@ def invert(pcset: set) -> set:
     pcset2 = set()
     if len(pcset) > 0:
         for pc in pcset:
-            pcset2.add(pitch.PitchClass(pc.pc * -1, pc.mod))
+            pcset2.add(PitchClass(pc.pc * -1, pc.mod))
     return pcset2
 
 
 def is_all_combinatorial_hexachord(pcset: set) -> bool:
     """
-    Whether or not a pcset is an all-combinatorial hexachord
+    Whether or not a pcset is an all-combinatorial hexachord.
     :param pcset: A pcset
     :return: True or False
     *Only compatible with mod 12 SetClasses
@@ -861,36 +862,36 @@ def is_all_combinatorial_hexachord(pcset: set) -> bool:
 
 def make_pcset12(*args) -> set:
     """
-    Makes a chromatic pcset (mod 12)
+    Makes a chromatic pcset (mod 12).
     :param args: Integers that represent pitch classes
     :return: A pcset
     """
     if type(args[0]) == list:
         args = args[0]
-    return {pitch.PitchClass(pc, 12) for pc in args}
+    return {PitchClass(pc, 12) for pc in args}
 
 
 def make_pcset24(*args) -> set:
     """
-    Makes a microtonal pcset (mod 24)
+    Makes a microtonal pcset (mod 24).
     :param args: Integers that represent pitch classes
     :return: A pcset
     """
     if type(args[0]) == list:
         args = args[0]
-    return {pitch.PitchClass(pc, 24) for pc in args}
+    return {PitchClass(pc, 24) for pc in args}
 
 
-def make_subset_graph(set_class: SetClass, smallest_cardinality: int = 1, show_graph: bool = False, size: tuple = (800, 1100)) -> networkx.DiGraph:
+def make_subset_graph(set_class: SetClass, smallest_cardinality: int = 1, show_graph: bool = False, size: tuple = (800, 1100)) -> DiGraph:
     """
-    Makes a subset graph
+    Makes a subset graph.
     :param set_class: A set-class
     :param smallest_cardinality: The smallest cardinality to include in the graph
     :param show_graph: Whether or not to generate a visualization of the graph
     :param size: The size of the visualized graph
     :return: A graph
     """
-    subset_graph = networkx.DiGraph()
+    subset_graph = DiGraph()
     set_classes = list(set_class.get_abstract_subset_classes())
     for sc in set_classes:
         if len(sc.pcset) >= smallest_cardinality:
@@ -919,7 +920,7 @@ def make_subset_graph(set_class: SetClass, smallest_cardinality: int = 1, show_g
 
 def multiply(pcset: set, n: int) -> set:
     """
-    Multiplies a pcset
+    Multiplies a pcset.
     :param pcset: The pcset
     :param n: The multiplier
     :return: The multiplied pcset
@@ -928,13 +929,13 @@ def multiply(pcset: set, n: int) -> set:
     pcset2 = set()
     if len(pcset) > 0:
         for pc in pcset:
-            pcset2.add(pitch.PitchClass(pc.pc * n, pc.mod))
+            pcset2.add(PitchClass(pc.pc * n, pc.mod))
     return pcset2
 
 
 def partitions2(pcset: set) -> list:
     """
-    Gets all partitions of a pcset (size 2 or 1)
+    Gets all partitions of a pcset (size 2 or 1).
     :param pcset: A pcset
     :return: A list of all partitions
     *Compatible with all PitchClass modulos
@@ -978,7 +979,7 @@ def permutations(pcset: set) -> list:
     flags = np.zeros((mod), dtype=np.int8)
     
     while critical_index > -1:
-        all_permutations.append([pitch.PitchClass(pc, mod) for pc in current_permutation])
+        all_permutations.append([PitchClass(pc, mod) for pc in current_permutation])
         critical_index = -1
         next_higher_digit = 0
         
@@ -1013,7 +1014,7 @@ def permutations(pcset: set) -> list:
 
 def set_class_filter12(name: str, sets: list) -> list:
     """
-    Filters a list of pcsets
+    Filters a list of pcsets.
     :param name: The name to find
     :param sets: A list of sets to filter
     :return: A filtered list
@@ -1045,14 +1046,14 @@ def subsets(pcset: set) -> list:
             sub.append([])
             for i in range(len(pcset)):
                 if index & (1 << i):
-                    sub[index].append(pitch.PitchClass(pcseg[i].pc, mod))
+                    sub[index].append(PitchClass(pcseg[i].pc, mod))
         sub.sort()
     return sub
 
 
 def transform(pcset, string) -> set:
     """
-    Transforms a pcset with a provided transformation string
+    Transforms a pcset with a provided transformation string.
     - Tn: transpose
     - I: invert
     - Mn: multiply
@@ -1082,7 +1083,7 @@ def transform(pcset, string) -> set:
 
 def transpose(pcset: set, n: int) -> set:
     """
-    Transposes a pcset
+    Transposes a pcset.
     :param pcset: The pcset
     :param n: The index of transposition
     :return: The transposed pcset
@@ -1092,7 +1093,7 @@ def transpose(pcset: set, n: int) -> set:
     if len(pcset) > 0:
         mod = next(iter(pcset)).mod
         for pc in pcset:
-            pcset2.add(pitch.PitchClass(pc.pc + n, mod))
+            pcset2.add(PitchClass(pc.pc + n, mod))
     return pcset2
 
 
@@ -1109,13 +1110,13 @@ def transpositional_combination(pcset1: set, pcset2: set) -> set:
         mod = next(iter(pcset1)).mod
         for pc2 in pcset2:
             for pc1 in pcset1:
-                pcset3.add(pitch.PitchClass(pc1.pc + pc2.pc, mod))
+                pcset3.add(PitchClass(pc1.pc + pc2.pc, mod))
     return pcset3
 
 
 def visualize(pcset: set) -> str:
     """
-    Visualizes a pcset
+    Visualizes a pcset.
     :param pcset: A pcset
     :return: A visualization
     *Compatible with all PitchClass modulos
@@ -1124,7 +1125,7 @@ def visualize(pcset: set) -> str:
     if len(pcset) > 0:
         mod = next(iter(pcset)).mod
         for i in range(mod):
-            if pitch.PitchClass(i, mod) in pcset:
+            if PitchClass(i, mod) in pcset:
                 line += "X"
             else:
                 line += " "

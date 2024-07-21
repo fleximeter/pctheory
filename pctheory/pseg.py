@@ -21,7 +21,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-from . import pitch
+from .pitch import Pitch, PitchClass
 
 
 def intervals(pseg: list) -> list:
@@ -48,7 +48,7 @@ def invert(pseg: list) -> list:
     if len(pseg) > 0:
         mod = pseg[0].mod
         for p in pseg:
-            pseg2.append(pitch.Pitch(p.p * -1, mod))
+            pseg2.append(Pitch(p.p * -1, mod))
     return pseg2
 
 
@@ -62,7 +62,7 @@ def make_pseg12(*args) -> list:
     if len(args) > 0:
         if type(args[0]) == list:
             args = args[0]
-        return [pitch.Pitch(p, 12) for p in args]
+        return [Pitch(p, 12) for p in args]
     else:
         return []
 
@@ -77,7 +77,7 @@ def make_pseg24(*args) -> list:
     if len(args) > 0:
         if type(args[0]) == list:
             args = args[0]
-        return [pitch.Pitch(p, 24) for p in args]
+        return [Pitch(p, 24) for p in args]
     else:
         return []
 
@@ -94,7 +94,7 @@ def multiply_order(pseg: list, n: int) -> list:
     if len(pseg) > 0:
         mod = pseg[0].mod
         for i in range(len(pseg)):
-            pseg2.append(pitch.Pitch(pseg[(i * n) % len(pseg)].p, mod))
+            pseg2.append(Pitch(pseg[(i * n) % len(pseg)].p, mod))
     return pseg2
 
 
@@ -109,7 +109,7 @@ def retrograde(pseg: list) -> list:
     if len(pseg) > 0:
         mod = pseg[0].mod
     for i in range(len(pseg) - 1, -1, -1):
-        pseg2.append(pitch.Pitch(pseg[i].pc, mod))
+        pseg2.append(Pitch(pseg[i].pc, mod))
     return pseg2
 
 
@@ -125,7 +125,7 @@ def rotate(pseg: list, n: int) -> list:
     if len(pseg) > 0:
         mod = pseg[0].mod
     for i in range(len(pseg)):
-        pseg2.append(pitch.Pitch(pseg[(i - n) % len(pseg)].p, mod))
+        pseg2.append(Pitch(pseg[(i - n) % len(pseg)].p, mod))
     return pseg2
 
 
@@ -138,7 +138,7 @@ def to_pcseg(pseg: list) -> list:
     """
     if len(pseg) > 0:
         mod = pseg[0].mod
-        return [pitch.PitchClass(p.pc, mod) for p in pseg]
+        return [PitchClass(p.pc, mod) for p in pseg]
     else:
         return []
 
@@ -155,5 +155,5 @@ def transpose(pseg: list, n: int) -> list:
     if len(pseg) > 0:
         mod = pseg[0].mod
         for p in pseg:
-            pseg2.append(pitch.Pitch(p.p + n, mod))
+            pseg2.append(Pitch(p.p + n, mod))
     return pseg2

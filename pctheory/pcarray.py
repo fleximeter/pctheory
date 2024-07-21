@@ -23,13 +23,13 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from . import transformations
 from . import pcseg as ps
-
+from .pitch import PitchClass
 
 class RotationalArray:
     """
     Represents a rotational array
     """
-    def __init__(self, pcseg=None):
+    def __init__(self, pcseg: list = None):
         """
         Creates a rotational array
         :param pcseg: A pcseg to import
@@ -54,7 +54,7 @@ class RotationalArray:
         return lines
 
     @property
-    def array(self):
+    def array(self) -> list:
         """
         Gets the rotational array
         :return: The rotational array
@@ -62,14 +62,14 @@ class RotationalArray:
         return self._array
 
     @property
-    def pcseg(self):
+    def pcseg(self) -> list:
         """
         Gets the pcseg
         :return: The pcseg
         """
         return self._pcseg
 
-    def __getitem__(self, i: int, j: int):
+    def __getitem__(self, i: int, j: int) -> PitchClass:
         """
         Gets the pc at the specified row and column
         :param i: The row
@@ -78,7 +78,7 @@ class RotationalArray:
         """
         return self._array[i][j]
 
-    def get_column(self, j: int):
+    def get_column(self, j: int) -> list:
         """
         Gets a column of the rotational array
         :param j: The column index
@@ -89,7 +89,7 @@ class RotationalArray:
             c.append(self._array[i][j])
         return c
 
-    def get_row(self, i: int):
+    def get_row(self, i: int) -> list:
         """
         Gets a row of the rotational array
         :param i: The row index
@@ -109,7 +109,7 @@ class RotationalArray:
             self._array.append(ps.rotate(ps.transpose(self._pcseg, -self._pcseg[i].pc), len(self._pcseg) - i))
 
 
-def str_simple_array(array, col_delimiter=" ", row_delimiter="\n"):
+def str_simple_array(array: list, col_delimiter: str = " ", row_delimiter: str = "\n") -> str:
     """
     Converts an array of pcs to string
     :param array: The array to convert
@@ -135,7 +135,7 @@ def str_simple_array(array, col_delimiter=" ", row_delimiter="\n"):
     return str_temp
 
 
-def make_array_chain(array, length: int):
+def make_array_chain(array: list, length: int) -> list:
     """
     Makes a chain of arrays
     :param array: An array

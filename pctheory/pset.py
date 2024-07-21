@@ -21,7 +21,8 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-from . import pitch, transformations, util
+from . import transformations, util
+from .pitch import Pitch, PitchClass
 import numpy as np
 import random
 
@@ -45,11 +46,11 @@ class Sieve:
         self._intervals = []
         self._pc_mod = pc_mod
         self._period = 0
-        self._base_pitch = pitch.Pitch(base_pitch.p, pc_mod)
+        self._base_pitch = Pitch(base_pitch, pc_mod)
         self.add_tuples(tuples)
 
     @property
-    def base_pitch(self) -> pitch.Pitch:
+    def base_pitch(self) -> Pitch:
         """
         The base pitch of the Sieve (pitch 0)
         :return: The base pitch
@@ -102,7 +103,7 @@ class Sieve:
         for tup in self._tuples:
             lcm_list.add(tup[0])
         self._period = util.lcm(lcm_list)
-        r = self.get_range(pitch.Pitch(self._base_pitch.p, self._pc_mod), pitch.Pitch(self._base_pitch.p + self._period, self._pc_mod))
+        r = self.get_range(Pitch(self._base_p, self._pc_mod), Pitch(self._base_p + self._period, self._pc_mod))
         r = list(r)
         r.sort()
         for i in range(1, len(r)):
@@ -116,17 +117,17 @@ class Sieve:
         :return: A pset
         """
         ps = set()
-        p_low = p0.p if type(p0) == pitch.Pitch else p0
-        p_high = p1.p + 1 if type(p1) == pitch.Pitch else p1 + 1
+        p_low = p0.p if type(p0) == Pitch else p0
+        p_high = p1.p + 1 if type(p1) == Pitch else p1 + 1
         for j in range(p_low, p_high):
-            i = j - self._base_pitch.p
+            i = j - self._base_p
             if i >= 0:
                 for tup in self._tuples:
                     if i % tup[0] == tup[1]:
-                        ps.add(pitch.Pitch(j, self._pc_mod))
+                        ps.add(Pitch(j, self._pc_mod))
         return ps
 
-    def intersection(self, sieve) -> Sieve:
+    def intersection(self, sieve) -> 'Sieve':
         """
         Intersects two Sieves
         :param sieve: A Sieve
@@ -148,12 +149,12 @@ class Sieve:
         ps = None
         if type(p) == set:
             ps = p
-        elif type(p) == pitch.Pitch:
+        elif type(p) == Pitch:
             ps = {p}
         elif type(p) == int:
-            ps = {pitch.Pitch(p, self._pc_mod)}
+            ps = {Pitch(p, self._pc_mod)}
         for q in ps:
-            i = q.p - self._base_pitch.p
+            i = q.p - self._base_p
             if i < 0:
                 return False
             else:
@@ -164,7 +165,7 @@ class Sieve:
                     return False
         return True
 
-    def union(self, sieve) -> Sieve:
+    def union(self, sieve) -> 'Sieve':
         """
         Unions two Sieves
         :param sieve: A Sieve
@@ -234,7 +235,7 @@ def generate_random_pset_realizations(pcset: set, lower_boundary: int, upper_bou
                 if candidate_pitch > upper_boundary:
                     in_range = False
                 else:
-                    choices.append(pitch.Pitch(candidate_pitch, mod))
+                    choices.append(Pitch(candidate_pitch, mod))
                 candidate_pitch += mod
             pitch_choices.append(choices)
 
@@ -368,7 +369,7 @@ def invert(pset: set) -> set:
     if len(pset) > 0:
         mod = next(iter(pset)).mod
         for p in pset:
-            pset2.add(pitch.Pitch(p.p * -1, mod))
+            pset2.add(Pitch(p.p * -1, mod))
     return pset2
 
 
@@ -381,7 +382,7 @@ def make_pset12(*args) -> set:
     """
     if type(args[0]) == list:
         args = args[0]
-    return {pitch.Pitch(p, 12) for p in args}
+    return {Pitch(p, 12) for p in args}
 
 
 def make_pset24(*args) -> set:
@@ -393,7 +394,7 @@ def make_pset24(*args) -> set:
     """
     if type(args[0]) == list:
         args = args[0]
-    return {pitch.Pitch(p, 24) for p in args}
+    return {Pitch(p, 24) for p in args}
 
 
 def subsets(pset: set) -> list:
@@ -427,7 +428,7 @@ def to_pcset(pset: set) -> set:
     """
     if len(pset) > 0:
         mod = next(iter(pset)).mod
-        return {pitch.PitchClass(p.pc, mod) for p in pset}
+        return {PitchClass(p.pc, mod) for p in pset}
     else:
         return set()
 
@@ -444,7 +445,7 @@ def transform(pset: set, transformation: transformations.UTO) -> set:
     if len(pset) > 0:
         mod = next(iter(pset)).mod
         for p in pset:
-            pset2.add(pitch.Pitch(p.p * transformation[1] + transformation[0], mod))
+            pset2.add(Pitch(p.p * transformation[1] + transformation[0], mod))
     return pset2
 
 
@@ -460,5 +461,5 @@ def transpose(pset: set, n: int) -> set:
     if len(pset) > 0:
         mod = next(iter(pset)).mod
         for p in pset:
-            pset2.add(pitch.Pitch(p.p + n, mod))
+            pset2.add(Pitch(p.p + n, mod))
     return pset2

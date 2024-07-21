@@ -34,7 +34,7 @@ pctheory.pitch
 
     .. py:method:: __eq__(self, other)
 
-        Compares two ``PitchClass``es for equality.
+        Compares two pitch-classes for equality.
 
         :param other: The other ``PitchClass``
         :return: ``True`` or ``False``
@@ -87,7 +87,7 @@ pctheory.pitch
 
     .. py:method:: __ne__(self, other)
 
-        Compares two ``PitchClass``es for equality.
+        Compares two pitch-classes for equality.
 
         :param other: The other ``PitchClass``
         :return: ``True`` or ``False``
@@ -145,7 +145,7 @@ pctheory.pitch
 
     .. py:method:: __eq__(self, other)
 
-        Compares two ``Pitch``es for equality.
+        Compares two pitches for equality.
 
         :param other: The other ``Pitch``
         :return: ``True`` or ``False``
@@ -198,7 +198,7 @@ pctheory.pitch
 
     .. py:method:: __ne__(self, other)
 
-        Compares two ``Pitch``es for equality.
+        Compares two pitches for equality.
 
         :param other: The other ``Pitch``
         :return: ``True`` or ``False``

@@ -257,7 +257,7 @@ pctheory.pcset
     :return: A pcset
 
 .. py:function:: make_pcset24(*args)
-    """
+    
     Makes a microtonal pcset (mod 24)
 
     :param args: Integers that represent pitch classes

@@ -51,7 +51,7 @@ class Sieve:
     @property
     def base_pitch(self) -> pitch.Pitch:
         """
-        The base pitch of the Sieve12 (pitch 0)
+        The base pitch of the Sieve (pitch 0)
         :return: The base pitch
         """
         return self._base_pitch
@@ -59,7 +59,7 @@ class Sieve:
     @property
     def intervals(self) -> list:
         """
-        The intervallic succession of the Sieve12
+        The intervallic succession of the Sieve
         :return: The intervallic succession
         """
         return self._intervals
@@ -75,7 +75,7 @@ class Sieve:
     @property
     def period(self) -> int:
         """
-        The period of the Sieve12
+        The period of the Sieve
         :return: The period
         """
         return self._period
@@ -83,7 +83,7 @@ class Sieve:
     @property
     def tuples(self) -> set:
         """
-        The tuples in the Sieve12
+        The tuples in the Sieve
         :return: The tuples
         """
         return self._tuples
@@ -166,9 +166,9 @@ class Sieve:
 
     def union(self, sieve):
         """
-        Unions two Sieve12s
-        :param sieve: A Sieve12
-        :return: A new Sieve12. It will have the same base pitch as self.
+        Unions two Sieves
+        :param sieve: A Sieve
+        :return: A new Sieve. It will have the same base pitch as self.
         """
         t = set()
         for tup in self._tuples:

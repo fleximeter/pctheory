@@ -274,7 +274,7 @@ class SetClass:
         self._pcset = SetClass.calculate_prime_form(self._pcset, self._weight_right, self._NUM_PC)
 
     @staticmethod
-    def calculate_prime_form(pcset: set, weight_from_right: bool = True, pc_mod: int=12):
+    def calculate_prime_form(pcset: set, weight_from_right: bool = True, pc_mod: int=12) -> set:
         """
         Calculates the prime form of a pcset
         :param pcset: The pcset
@@ -329,7 +329,7 @@ class SetClass:
 
         return prime_set
 
-    def contains_abstract_subset(self, sc):
+    def contains_abstract_subset(self, sc) -> bool:
         """
         Determines if a set-class is an abstract subset of this set-class
         :param sc: A set-class
@@ -350,7 +350,7 @@ class SetClass:
                     return True
             return False
 
-    def get_abstract_complement(self):
+    def get_abstract_complement(self) -> SetClass:
         """
         Gets the abstract complement of the SetClass
         :return: The abstract complement SetClass
@@ -359,7 +359,7 @@ class SetClass:
         complement_set_class.pcset = get_complement(self._pcset)
         return complement_set_class
 
-    def get_invariance_vector(self):
+    def get_invariance_vector(self) -> list:
         """
         Gets the invariance vector of the SetClass
         :return: The invariance vector, or None if the SetClass has a PitchClass modulo other than 12
@@ -380,7 +380,7 @@ class SetClass:
         else:
             return None
 
-    def get_abstract_subset_classes(self):
+    def get_abstract_subset_classes(self) -> set:
         """
         Gets a set of subset-classes contained in this SetClass
         :return:
@@ -391,7 +391,7 @@ class SetClass:
             subset_classes.add(SetClass(s, pc_mod=self._NUM_PC))
         return subset_classes
 
-    def get_partition2_subset_classes(self):
+    def get_partition2_subset_classes(self) -> set:
         """
         Gets a set of set-class partitions of this SetClass
         :return:
@@ -403,7 +403,7 @@ class SetClass:
         return partitions2_set
 
     @staticmethod
-    def get_set_classes12(cardinalities: list=None):
+    def get_set_classes12(cardinalities: list=None) -> list:
         """
         Gets the chromatic set-classes
         :param cardinalities: A list of cardinalities if you don't want the entire list of 224 set-classes
@@ -423,7 +423,7 @@ class SetClass:
                 set_classes.append(sc)
         return set_classes
 
-    def get_z_relation(self):
+    def get_z_relation(self) -> SetClass:
         """
         Gets the Z-relation of the SetClass
         :return: The Z-relation of the SetClass
@@ -438,7 +438,7 @@ class SetClass:
                 zset.load_from_name(name_tables["zNameTable"][f])
             return zset
 
-    def is_all_combinatorial_hexachord(self):
+    def is_all_combinatorial_hexachord(self) -> bool:
         """
         Whether or not the SetClass is an all-combinatorial hexachord
         :return: True or False
@@ -449,7 +449,7 @@ class SetClass:
             return False
 
     @staticmethod
-    def is_valid_name(name: str):
+    def is_valid_name(name: str) -> bool:
         """
         Determines if a chromatic (mod 12) set-class name is valid. Validates prime form, Forte, and Morris names.
         Prime form name format: [xxxx]
@@ -475,7 +475,6 @@ class SetClass:
         """
         Loads a set-class from a prime-form, Morris, or Forte name
         :param name: The name
-        :return:
         """
         global name_tables
         morris_matcher = re.compile(r'\(?\d+-z?\d+\)?\[\d+\]', re.IGNORECASE)
@@ -661,7 +660,7 @@ class SetClass:
         return pclists[0]
 
 
-def get_all_combinatorial_hexachord(name: str):
+def get_all_combinatorial_hexachord(name: str) -> SetClass:
     """
     Gets an all-combinatorial hexachord (ACH) by name (A-F)
     :param name: The name of the hexachord (A-F)
@@ -673,7 +672,7 @@ def get_all_combinatorial_hexachord(name: str):
     return sc
 
 
-def get_complement(pcset: set):
+def get_complement(pcset: set) -> set:
     """
     Gets the complement of a pcset
     :param pcset: A pcset
@@ -688,7 +687,7 @@ def get_complement(pcset: set):
     return universal - pcset
 
 
-def get_complement_map_utos(pcset: set):
+def get_complement_map_utos(pcset: set) -> set:
     """
     Gets all UTOs that map a pcset into its complement
     :param pcset: A pcset
@@ -743,7 +742,7 @@ def get_complement_map_utos(pcset: set):
     return utos
 
 
-def get_corpus(pcset: set):
+def get_corpus(pcset: set) -> set:
     """
     Gets all transformations of a provided pcset
     :param pcset: A pcset
@@ -759,7 +758,7 @@ def get_corpus(pcset: set):
     return pcsets
 
 
-def get_self_map_utos(pcset: set):
+def get_self_map_utos(pcset: set) -> set:
     """
     Gets all UTOs that map a pcset into itself
     :param pcset: A pcset
@@ -832,7 +831,7 @@ def convert_to_pcset24(pcset: set) -> set:
     return {pitch.PitchClass(pc.pc * 2, 24) for pc in pcset}
     
 
-def invert(pcset: set):
+def invert(pcset: set) -> set:
     """
     Inverts a pcset
     :param pcset: The pcset
@@ -846,7 +845,7 @@ def invert(pcset: set):
     return pcset2
 
 
-def is_all_combinatorial_hexachord(pcset: set):
+def is_all_combinatorial_hexachord(pcset: set) -> bool:
     """
     Whether or not a pcset is an all-combinatorial hexachord
     :param pcset: A pcset
@@ -860,7 +859,7 @@ def is_all_combinatorial_hexachord(pcset: set):
         return False
 
 
-def make_pcset12(*args):
+def make_pcset12(*args) -> set:
     """
     Makes a chromatic pcset (mod 12)
     :param args: Integers that represent pitch classes
@@ -871,7 +870,7 @@ def make_pcset12(*args):
     return {pitch.PitchClass(pc, 12) for pc in args}
 
 
-def make_pcset24(*args):
+def make_pcset24(*args) -> set:
     """
     Makes a microtonal pcset (mod 24)
     :param args: Integers that represent pitch classes
@@ -882,7 +881,7 @@ def make_pcset24(*args):
     return {pitch.PitchClass(pc, 24) for pc in args}
 
 
-def make_subset_graph(set_class, smallest_cardinality=1, show_graph=False, size=(800, 1100)):
+def make_subset_graph(set_class: SetClass, smallest_cardinality: int = 1, show_graph: bool = False, size: tuple = (800, 1100)) -> networkx.DiGraph:
     """
     Makes a subset graph
     :param set_class: A set-class
@@ -918,7 +917,7 @@ def make_subset_graph(set_class, smallest_cardinality=1, show_graph=False, size=
     return subset_graph
 
 
-def multiply(pcset: set, n: int):
+def multiply(pcset: set, n: int) -> set:
     """
     Multiplies a pcset
     :param pcset: The pcset
@@ -933,7 +932,7 @@ def multiply(pcset: set, n: int):
     return pcset2
 
 
-def partitions2(pcset: set):
+def partitions2(pcset: set) -> list:
     """
     Gets all partitions of a pcset (size 2 or 1)
     :param pcset: A pcset
@@ -955,7 +954,7 @@ def partitions2(pcset: set):
     return partitions_list
 
 
-def permutations(pcset: set):
+def permutations(pcset: set) -> list:
     """
     Generates all permutations of a pcset. Uses a swapping notion derived from the Bauer-Mengelberg/Ferentz algorithm
     for generating all-interval twelve-tone rows.
@@ -1012,7 +1011,7 @@ def permutations(pcset: set):
     return all_permutations
 
 
-def set_class_filter12(name: str, sets: list):
+def set_class_filter12(name: str, sets: list) -> list:
     """
     Filters a list of pcsets
     :param name: The name to find
@@ -1029,7 +1028,7 @@ def set_class_filter12(name: str, sets: list):
     return newlist
 
 
-def subsets(pcset: set):
+def subsets(pcset: set) -> list:
     """
     Gets all subsets of a pcset, using the bit masking solution from
     https://afteracademy.com/blog/print-all-subsets-of-a-given-set
@@ -1051,7 +1050,7 @@ def subsets(pcset: set):
     return sub
 
 
-def transform(pcset, string):
+def transform(pcset, string) -> set:
     """
     Transforms a pcset with a provided transformation string
     - Tn: transpose
@@ -1081,7 +1080,7 @@ def transform(pcset, string):
     return pcset2
 
 
-def transpose(pcset: set, n: int):
+def transpose(pcset: set, n: int) -> set:
     """
     Transposes a pcset
     :param pcset: The pcset
@@ -1097,7 +1096,7 @@ def transpose(pcset: set, n: int):
     return pcset2
 
 
-def transpositional_combination(pcset1: set, pcset2: set):
+def transpositional_combination(pcset1: set, pcset2: set) -> set:
     """
     Transpositionally combines (TC) two pcsets. This is Boulez's "multiplication."
     :param pcset1: A pcset
@@ -1114,7 +1113,7 @@ def transpositional_combination(pcset1: set, pcset2: set):
     return pcset3
 
 
-def visualize(pcset: set):
+def visualize(pcset: set) -> str:
     """
     Visualizes a pcset
     :param pcset: A pcset

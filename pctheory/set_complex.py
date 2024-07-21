@@ -21,13 +21,13 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-from . import pcset
+from .pcset import SetClass
 
 
-set_classes12 = pcset.SetClass.get_set_classes12()
+set_classes12 = SetClass.get_set_classes12()
 
 
-def assert_k(s, t):
+def assert_k(s: SetClass, t: SetClass) -> bool:
     """
     Asserts that s and t are in a K-relationship
     Source: Morris, "Class Notes for Atonal Music Theory," p. 49
@@ -42,7 +42,7 @@ def assert_k(s, t):
            s.contains_abstract_subset(t_bar)
 
 
-def assert_kh(s, t):
+def assert_kh(s: SetClass, t: SetClass) -> bool:
     """
     Asserts that s and t are in a Kh-relationship
     Source: Morris, "Class Notes for Atonal Music Theory," p. 49
@@ -55,7 +55,7 @@ def assert_kh(s, t):
         (t_bar.contains_abstract_subset(s) or s.contains_abstract_subset(t_bar))
 
 
-def get_k12(nexus: pcset.SetClass):
+def get_k12(nexus: SetClass) -> list:
     """
     Gets a K-complex about a provided nexus set
     :param nexus: A nexus set
@@ -68,7 +68,7 @@ def get_k12(nexus: pcset.SetClass):
     return k
 
 
-def get_kh12(nexus: pcset.SetClass):
+def get_kh12(nexus: SetClass) -> list:
     """
     Gets a Kh-complex about a provided nexus set
     :param nexus: A nexus set

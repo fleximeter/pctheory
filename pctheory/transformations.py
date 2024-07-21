@@ -31,7 +31,7 @@ class OTO:
     retrograde (0-no or 1-yes). [2] is the multiplier. Multiplication is performed first, then retrograding,
     then transposition. These operators can be used with pcsegs.
     """
-    def __init__(self, T=0, R=0, M=1):
+    def __init__(self, T: int = 0, R: int = 0, M: int = 1):
         """
         Creates an OTO
         :param T: The index of transposition
@@ -175,7 +175,7 @@ class UTO:
     [0] is the index of transposition. [1] is the multiplier. Multiplication is performed first,
     then transposition.
     """
-    def __init__(self, T=0, M=1):
+    def __init__(self, T: int = 0, M: int = 1):
         """
         Creates a UTO
         :param T: The index of transposition
@@ -257,7 +257,7 @@ class UTO:
         """
         self._uto = value
 
-    def cycles(self, mod=12):
+    def cycles(self, mod: int = 12) -> list:
         """
         Gets the cycles of the UTO
         :param mod: The number of possible pcs in the system
@@ -278,7 +278,7 @@ class UTO:
             del int_list[0]
         return cycles
 
-    def inverse(self, mod=12):
+    def inverse(self, mod: int = 12) -> UTO:
         """
         Gets the inverse of the UTO
         :param mod: The number of possible pcs in the system
@@ -376,7 +376,7 @@ def find_utos(pcset1: set, pcset2: set):
     return utos_final
 
 
-def get_otos12():
+def get_otos12() -> list:
     """
     Gets chromatic OTOs (ROs)
     :return: A list of OTOs
@@ -394,7 +394,7 @@ def get_otos12():
     return otos
 
 
-def get_otos24():
+def get_otos24() -> list:
     """
     Gets microtonal OTOs
     :return: A list of microtonal OTOs
@@ -420,7 +420,7 @@ def get_otos24():
     return otos
 
 
-def get_utos12():
+def get_utos12() -> dict:
     """
     Gets the twelve-tone UTOs (TTOs)
     :return: A dictionary of UTOs
@@ -434,7 +434,7 @@ def get_utos12():
     return utos
 
 
-def get_utos24():
+def get_utos24() -> dict:
     """
     Gets the 24-tone UTOs (24TOs)
     :return: A dictionary of UTOs
@@ -452,7 +452,7 @@ def get_utos24():
     return utos
 
 
-def left_multiply_utos(*args, mod=12):
+def left_multiply_utos(*args, mod: int = 12) -> UTO:
     """
     Left-multiplies a list of UTOs
     :param args: A collection of UTOs (can be one argument as a list, or multiple UTOs separated by commas.
@@ -482,7 +482,7 @@ def left_multiply_utos(*args, mod=12):
         return UTO(n % mod, m % mod)
 
 
-def make_uto_list(*args):
+def make_uto_list(*args) -> list:
     """
     Makes a UTO list
     :param args: One or more tuples or lists representing UTOs

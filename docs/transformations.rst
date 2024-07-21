@@ -8,18 +8,18 @@ pctheory.transformations
     [2] is the multiplier. Multiplication is performed first, then retrograding, then transposition. The point at which retrogradation occurs does not affect the final result. 
     These operators can be used with pcsegs.
     
-    .. py:property:: OTO
+    .. py:property:: oto
         
-        Gets the OTO as a tuple. Index 0 is the index of transposition, index 1 is whether or not to retrograde, and
+        Gets the ``OTO`` as a tuple. Index 0 is the index of transposition, index 1 is whether or not to retrograde, and
         index 2 is the multiplier.
 
-    .. py:method:: __init__(self, T=0, R=0, M=1)
+    .. py:method:: __init__(self, T: int = 0, R: int = 0, M: int = 1)
         
-        Creates an OTO
+        Creates an ``OTO``.
         
-        :param T: The index of transposition
-        :param R: Whether or not to retrograde
-        :param M: The multiplier
+        :param int T: The index of transposition
+        :param int R: Whether or not to retrograde
+        :param int M: The multiplier
         
     .. py:method:: __eq__(self, other)
 
@@ -31,10 +31,10 @@ pctheory.transformations
 
     .. py:method:: __getitem__(self, item)
 
-        Gets the multiplier, retrograde flag, or adder of this UTO
+        Gets the multiplier, retrograde flag, or adder of this ``OTO``.
         
-        :param item: The index to retrieve
-        :return: The adder, retrograde flag, or multiplier
+        :param int item: The index to retrieve
+        :return: The multiplier, retrograde flag, or adder
         :rtype: int
 
     .. py:method:: __ge__(self, other)
@@ -85,19 +85,19 @@ pctheory.transformations
 
     .. py:method:: __repr__(self)
 
-        Gets a representation of this ``OTO``
+        Gets a representation of this ``OTO``.
 
         :return: A representation
 
     .. py:method:: __str__(self)
 
-        Gets a representation of this ``OTO``
+        Gets a representation of this ``OTO``.
 
         :return: A representation
 
     .. py:method:: transform(self, item)
         
-        Transforms an item (can be a pitch-class, list, set, or any number of nestings of these objects)
+        Transforms an item (can be a pitch-class, list, set, or any number of nestings of these objects).
         
         :param item: An item
         :return: The transformed item
@@ -111,34 +111,34 @@ pctheory.transformations
 
         Gets the UTO as a list.
 
-    .. py:method:: __init__(self, T=0, M=1)
+    .. py:method:: __init__(self, T: int = 0, M: int = 1)
         
         Creates a UTO
         
-        :param T: The index of transposition
-        :param M: The index of multiplication
+        :param int T: The index of transposition
+        :param int M: The index of multiplication
         
     .. py:method:: __eq__(self, other)
 
         Compares two UTOs for equality.
         
-        :param other: The other ``UTO``
+        :param UTO other: The other ``UTO``
         :returns: ``True`` or ``False``
         :rtype: bool
 
     .. py:method:: __getitem__(self, item)
 
-        Gets the multiplier or adder of this UTO
+        Gets the multiplier or adder of this ``UTO``.
         
-        :param item: The index to retrieve
-        :return: The adder or multiplier
+        :param int item: The index to retrieve
+        :return: The multiplier or adder
         :rtype: int
 
     .. py:method:: __ge__(self, other)
 
         Determines if this ``UTO`` is greater than or equal to another ``UTO``.
         
-        :param other: The other ``UTO``
+        :param UTO other: The other ``UTO``
         :returns: ``True`` or ``False``
         :rtype: bool
 
@@ -146,13 +146,13 @@ pctheory.transformations
 
         Determines if this ``UTO`` is greater than another ``UTO``.
         
-        :param other: The other ``UTO``
+        :param UTO other: The other ``UTO``
         :returns: ``True`` or ``False``
         :rtype: bool
 
     .. py:method:: __hash__(self)
 
-        Gets the hash value of this ``UTO``
+        Gets the hash value of this ``UTO``.
 
         :returns: The hash value
 
@@ -160,7 +160,7 @@ pctheory.transformations
 
         Determines if this ``UTO`` is less than or equal to another ``UTO``.
         
-        :param other: The other ``UTO``
+        :param UTO other: The other ``UTO``
         :returns: ``True`` or ``False``
         :rtype: bool
 
@@ -168,7 +168,7 @@ pctheory.transformations
 
         Determines if this ``UTO`` is less than another ``UTO``.
         
-        :param other: The other ``UTO``
+        :param UTO other: The other ``UTO``
         :returns: ``True`` or ``False``
         :rtype: bool
 
@@ -176,46 +176,48 @@ pctheory.transformations
 
         Compares two UTOs for inequality.
         
-        :param other: The other ``UTO``
+        :param UTO other: The other ``UTO``
         :returns: ``True`` or ``False``
         :rtype: bool
 
     .. py:method:: __repr__(self)
 
-        Gets a representation of this ``UTO``
+        Gets a representation of this ``UTO``.
 
         :return: A representation
 
     .. py:method:: __str__(self)
 
-        Gets a representation of this ``UTO``
+        Gets a representation of this ``UTO``.
 
         :return: A representation
 
-    .. py:method:: cycles(self, mod=12)
+    .. py:method:: cycles(self, mod: int = 12)
         
-        Gets the cycles of the UTO
+        Gets the cycles of the ``UTO``.
         
-        :param mod: The number of possible pcs in the system
+        :param int mod: The number of possible pcs in the system.
         :return: The cycles, as a list of lists
+        :return: list
 
-    .. py:method:: inverse(self, mod=12)
+    .. py:method:: inverse(self, mod: int = 12)
         
-        Gets the inverse of the UTO
+        Gets the inverse of the ``UTO``.
         
-        :param mod: The number of possible pcs in the system
+        :param int mod: The number of possible pcs in the system.
         :return: The inverse
+        :rtype: UTO
 
     .. py:method:: transform(self, item)
         
-        Transforms a pcset, pcseg, or pc
+        Transforms a pcset, pcseg, or pc.
         
         :param item: A pcset, pcseg, or pc
         :return: The transformed item
 
 .. py:function:: find_otos(pcseg1: list, pcseg2: list)
     
-    Gets all OTO transformations of pcseg1 that contain pcseg2 as an ordered subseg
+    Gets all OTO transformations of pcseg1 that contain pcseg2 as an ordered subseg.
     
     :param pcseg1: A pcseg
     :param pcseg2: A pcseg
@@ -232,40 +234,45 @@ pctheory.transformations
 
 .. py:function:: get_otos12()
     
-    Gets chromatic OTOs (ROs)
+    Gets chromatic OTOs (ROs).
     
     :return: A list of OTOs
+    :rtype: list
 
 .. py:function:: get_otos24()
     
-    Gets microtonal OTOs
+    Gets microtonal OTOs.
     
     :return: A list of microtonal OTOs
+    :rtype: list
 
 .. py:function:: get_utos12()
     
-    Gets the twelve-tone UTOs (TTOs)
+    Gets the twelve-tone UTOs (TTOs).
     
     :return: A dictionary of UTOs
+    :rtype: dict
 
 .. py:function:: get_utos24()
     
-    Gets the 24-tone UTOs (24TOs)
+    Gets the 24-tone UTOs (24TOs).
     
     :return: A dictionary of UTOs
+    :rtype: dict
 
-.. py:function:: left_multiply_utos(*args, mod=12)
+.. py:function:: left_multiply_utos(*args, mod: int = 12)
     
-    Left-multiplies a list of UTOs
+    Left-multiplies a list of UTOs.
+
     :param args: A collection of UTOs (can be one argument as a list, or multiple UTOs separated by commas. The highest index is evaluated first, and the lowest index is evaluated last.)
-    :param mod: The number of pcs in the system
+    :param int mod: The number of pcs in the system
     :return: The result
+    :rtype: UTO
 
 .. py:function:: make_uto_list(*args)
     
-    Makes a UTO list
+    Makes a UTO list.
     
     :param args: One or more tuples or lists representing UTOs
     :return: A UTO list
-
-    
+    :rtype: list

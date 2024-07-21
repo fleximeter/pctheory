@@ -126,7 +126,7 @@ class Sieve:
                         ps.add(pitch.Pitch(j, self._pc_mod))
         return ps
 
-    def intersection(self, sieve):
+    def intersection(self, sieve) -> Sieve:
         """
         Intersects two Sieves
         :param sieve: A Sieve
@@ -164,7 +164,7 @@ class Sieve:
                     return False
         return True
 
-    def union(self, sieve):
+    def union(self, sieve) -> Sieve:
         """
         Unions two Sieves
         :param sieve: A Sieve
@@ -289,7 +289,7 @@ def get_fb_class(pset: set, p0: int) -> list:
     return intlist
 
 
-def get_ic_matrix(pset: set) -> np.array:
+def get_ic_matrix(pset: set) -> np.ndarray:
     """
     Gets the pitch ic-matrix
     :param pset: The pset

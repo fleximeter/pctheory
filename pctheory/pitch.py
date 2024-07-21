@@ -135,7 +135,7 @@ class PitchClass:
         return self._mod
 
     @property
-    def pc(self):
+    def pc(self) -> int:
         """
         The pitch-class integer
         :return: The pitch-class integer
@@ -274,7 +274,7 @@ class Pitch(PitchClass):
             raise TypeError("Pitches can only be subtracted by other Pitches of the same PitchClass modulo, or by integers.")
 
     @property
-    def p(self):
+    def p(self) -> int:
         """
         The pitch integer
         :return: The pitch integer
@@ -292,7 +292,7 @@ class Pitch(PitchClass):
         self.pc = self._p
 
     @property
-    def pname(self):
+    def pname(self) -> str:
         """
         The pitch name of the pitch
         :return: The pitch name
@@ -309,7 +309,7 @@ class Pitch(PitchClass):
         self._pname = value
 
     @property
-    def midi(self):
+    def midi(self) -> int:
         """
         The MIDI version of the pitch integer
         :return: The MIDI version of the pitch integer. If the pitch is 

@@ -24,7 +24,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 from . import pitch
 
 
-def intervals(pseg: list):
+def intervals(pseg: list) -> list:
     """
     Gets the ordered interval content of a pseg
     :param pseg: The pseg
@@ -37,7 +37,7 @@ def intervals(pseg: list):
     return intlist
     
 
-def invert(pseg: list):
+def invert(pseg: list) -> list:
     """
     Inverts a pseg
     :param pseg: The pseg
@@ -52,7 +52,7 @@ def invert(pseg: list):
     return pseg2
 
 
-def make_pseg12(*args):
+def make_pseg12(*args) -> list:
     """
     Makes a pseg
     :param args: Ps
@@ -67,7 +67,7 @@ def make_pseg12(*args):
         return []
 
 
-def make_pseg24(*args):
+def make_pseg24(*args) -> list:
     """
     Makes a pseg
     :param args: Ps
@@ -82,7 +82,7 @@ def make_pseg24(*args):
         return []
 
 
-def multiply_order(pseg: list, n: int):
+def multiply_order(pseg: list, n: int) -> list:
     """
     Multiplies a pseg's order
     :param pseg: The pseg
@@ -98,7 +98,7 @@ def multiply_order(pseg: list, n: int):
     return pseg2
 
 
-def retrograde(pseg: list):
+def retrograde(pseg: list) -> list:
     """
     Retrogrades a pseg
     :param pseg: The pseg
@@ -113,7 +113,7 @@ def retrograde(pseg: list):
     return pseg2
 
 
-def rotate(pseg: list, n: int):
+def rotate(pseg: list, n: int) -> list:
     """
     Rotates a pseg
     :param pseg: The pseg
@@ -129,7 +129,7 @@ def rotate(pseg: list, n: int):
     return pseg2
 
 
-def to_pcseg(pseg: list):
+def to_pcseg(pseg: list) -> list:
     """
     Makes a pcseg out of a pseg
     :param pseg: A pseg
@@ -143,7 +143,7 @@ def to_pcseg(pseg: list):
         return []
 
 
-def transpose(pseg: list, n: int):
+def transpose(pseg: list, n: int) -> list:
     """
     Transposes a pseg
     :param pseg: The pseg

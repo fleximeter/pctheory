@@ -29,6 +29,29 @@ _rng = random.Random()
 _rng.seed()
 
 
+def adjacent_search(pcseg: list, corpus: list) -> list:
+    """
+    Performs an adjacent search on a corpus of pcsegs. Returns all pcsegs in the corpus that contain pcseg as an ordered sublist.
+    :param pcseg: A pcseg to search for
+    :param corpus: The corpus of pcsegs to search
+    :return: A sublist of pcsegs from the corpus that have pcseg in them. If an entry in the original corpus contains pcseg more than once,
+    it will only be included once in this sublist.
+    If no entries have pcseg in them, returns an empty list.
+    """
+    new_corpus = []
+    for entry in corpus:
+        for i in range(0, len(entry) - len(pcseg)):
+            found = True
+            for j in range(0, len(pcseg)):
+                if pcseg[j] != entry[i+j]:
+                    found = False
+                    break
+            if found:
+                new_corpus.append(entry)
+                break
+    return new_corpus
+
+
 def are_combinatorial2(row1: list, row2: list) -> bool:
     """
     Determines if two rows are hexachordally combinatorial.
@@ -764,7 +787,6 @@ class InvarianceMatrix:
         self._c = None
         self._mx_type = mx_type.upper()
         self._mx = None
-        self._t = None
         self._load_matrix(a, c)
 
     def __getitem__(self, i: int, j: int) -> PitchClass:
@@ -869,32 +891,32 @@ class InvarianceMatrix:
             if a[0].mod == 12:
                 INVERT = 11
                 if self._mx_type == "T":
-                    ro.oto = [0, 0, 1 * INVERT % 12]
+                    ro.oto = [0, 0, (1 * INVERT) % 12]
                 elif self._mx_type == "M" or self._mx_type == "M5":
-                    ro.oto = [0, 0, 5 * INVERT % 12]
+                    ro.oto = [0, 0, (5 * INVERT) % 12]
                 elif self._mx_type == "MI" or self._mx_type == "M7":
-                    ro.oto = [0, 0, 7 * INVERT % 12]
+                    ro.oto = [0, 0, (7 * INVERT) % 12]
                 elif self._mx_type == "I" or self._mx_type == "M11":
-                    ro.oto = [0, 0, 11 * INVERT % 12]
+                    ro.oto = [0, 0, (11 * INVERT) % 12]
                 b = ro.transform(c)
             elif a[0].mod == 24:
                 INVERT = 23
                 if self._mx_type == "T":
-                    ro.oto = [0, 0, 1 * INVERT % 24]
+                    ro.oto = [0, 0, (1 * INVERT) % 24]
                 elif self._mx_type == "M5":
-                    ro.oto = [0, 0, 5 * INVERT % 24]
+                    ro.oto = [0, 0, (5 * INVERT) % 24]
                 elif self._mx_type == "M7":
-                    ro.oto = [0, 0, 7 * INVERT % 24]
+                    ro.oto = [0, 0, (7 * INVERT) % 24]
                 elif self._mx_type == "M11":
-                    ro.oto = [0, 0, 11 * INVERT % 24]
+                    ro.oto = [0, 0, (11 * INVERT) % 24]
                 elif self._mx_type == "M13":
-                    ro.oto = [0, 0, 13 * INVERT % 24]
+                    ro.oto = [0, 0, (13 * INVERT) % 24]
                 elif self._mx_type == "M17":
-                    ro.oto = [0, 0, 17 * INVERT % 24]
+                    ro.oto = [0, 0, (17 * INVERT) % 24]
                 elif self._mx_type == "M19":
-                    ro.oto = [0, 0, 19 * INVERT % 24]
+                    ro.oto = [0, 0, (19 * INVERT) % 24]
                 elif self._mx_type == "I" or self._mx_type == "M23":
-                    ro.oto = [0, 0, 23 * INVERT % 24]
+                    ro.oto = [0, 0, (23 * INVERT) % 24]
                 b = ro.transform(c)
             else:
                 if self._mx_type == "T":
@@ -907,7 +929,7 @@ class InvarianceMatrix:
             for i in range(len(b)):
                 mxrow = []
                 for j in range(len(a)):
-                    mxrow.append(self._t(b[i].pc + a[j].pc))
+                    mxrow.append(PitchClass(b[i].pc + a[j].pc, a[0].mod))
                 self._mx.append(mxrow)
             self._a = a.copy()
             self._b = b

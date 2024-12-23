@@ -477,8 +477,8 @@ def left_multiply_utos(*args, mod: int = 12) -> UTO:
         for i in range(len(utos)-2, -1, -1):
             tr_n = utos[i][0]
             mul_n = utos[i][1]
-            m = m * mul_n + tr_n
-            n *= mul_n
+            m = m * mul_n
+            n = mul_n * n + tr_n
         return UTO(n % mod, m % mod)
 
 

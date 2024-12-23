@@ -1,6 +1,14 @@
 pctheory.pcseg
 ################
 
+.. py:function:: adjacent_search(pcseg: list, corpus: list)
+
+     Performs an adjacent search on a corpus of pcsegs. Returns all pcsegs in the corpus that contain pcseg as an ordered sublist.
+    :param pcseg: A pcseg to search for
+    :param corpus: The corpus of pcsegs to search
+    :return: A sublist of pcsegs from the corpus that have pcseg in them. If an entry in the original corpus contains pcseg more than once, it will only be included once in this sublist. If no entries have pcseg in them, returns an empty list.
+    *Compatible with all PitchClass modulos  
+
 .. py:function:: are_combinatorial2(row1: list, row2: list)
 
     Determines if two rows are hexachordally combinatorial

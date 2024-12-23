@@ -20,6 +20,10 @@ Uses of pctheory
 
 Because ``pctheory`` is a Python module, it is easy to write simple programs in Python to investigate pitch, pitch-class, and operator relations. If you want to generate all pentachordal set-classes and select only those that contain ic3, you can write a short program that uses ``pctheory`` to do this for you. If you want to study all of the subset-classes of a set-class, it is easy to generate them with pctheory. If you want to generate several different invariance matrices, this can be easily done. There is no need to work it out on paper. If you want to transform an array, ``pctheory`` can do that with a single method call. Perhaps you want to study all of the pcsets in a set-class. They can be generated with a single method call as well. If you need to know Elliott Carter's number for a particular chromatic chord, that functionality is part of the SetClass12 class, so there is no need to open a reference book. The same goes for standard properties like Forte names and ic vectors.
 
+Quick start
+-----------
+To get started using ``pctheory``, you can consult the three sample Jupyter notebooks contained in the GitHub repository (https://github.com/fleximeter/pctheory).
+
 Prerequisites
 -------------
 ``pctheory`` requires Python 3.10 or newer, as well as the additional modules ``networkx``, ``numpy``, ``pyvis``, and ``regex``.

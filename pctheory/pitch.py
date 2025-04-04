@@ -274,6 +274,44 @@ class Pitch(PitchClass):
             raise TypeError("Pitches can only be subtracted by other Pitches of the same PitchClass modulo, or by integers.")
 
     @property
+    def midi(self) -> int:
+        """
+        A wrapper for getting the MIDI value (at this point, the pitch integer is the same as the MIDI number)
+        :returns: The MIDI number of the pitch (same as the pitch)
+        """
+        return self._p
+    
+    @midi.setter
+    def midi(self, value: int):
+        """
+        Sets the pitch integer
+        :param value: The new pitch integer
+        """
+        self._p = value
+        self.pc = self._p
+    
+    @property
+    def morris(self) -> int:
+        """
+        The Morris version of the pitch integer
+        :return: The Morris version of the pitch integer (where C4 is 0)
+        """
+        if self._mod == 12:
+            return self._p - 60
+        else:
+            return (self._p - 60) // self._mod * 12 + self._pc * 12 / self._mod
+
+    @morris.setter
+    def morris(self, value):
+        """
+        The Morris version of the pitch integer
+        :param value: The new Morris version of the pitch integer
+        :return:
+        """
+        self._p = value + 60
+        self.pc = self._p
+
+    @property
     def p(self) -> int:
         """
         The pitch integer
@@ -307,26 +345,3 @@ class Pitch(PitchClass):
         :return:
         """
         self._pname = value
-
-    @property
-    def midi(self) -> int:
-        """
-        The MIDI version of the pitch integer
-        :return: The MIDI version of the pitch integer. If the pitch is 
-        microtonal or anything other than a 12-tone chromatic pitch, 
-        the MIDI value will be an appropriate floating-point number.
-        """
-        if self._mod == 12:
-            return 60 + self._p
-        else:
-            return 60 + self._p // self._mod * 12 + self._pc * 12 / self._mod
-
-    @midi.setter
-    def midi(self, value):
-        """
-        The MIDI version of the pitch integer
-        :param value: The new MIDI version of the pitch integer
-        :return:
-        """
-        self._p = value - 60
-        self.pc = self._p

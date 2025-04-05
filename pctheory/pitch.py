@@ -21,7 +21,54 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
+import warnings
+
+# maps integers to hex values
 _hex_map = {0: '0', 1: '1', 2: '2', 3: '3', 4: '4', 5: '5', 6: '6', 7: '7', 8: '8', 9: '9', 10: 'A', 11: 'B', 12: 'C', 13: 'D', 14: 'E', 15: 'F'}
+
+# maps chromatic note numbers to default letter names (+ sharp, - flat)
+_letter_map12 = {
+    0: ('C',),
+    1: ('C+', 'D-'),
+    2: ('D',),
+    3: ('D+', 'E-'),
+    4: ('E',),
+    5: ('F',),
+    6: ('F+', 'G-'),
+    7: ('G',),
+    8: ('G+', 'A-'),
+    9: ('A',),
+    10: ('A+', 'B-'),
+    11: ('B',)
+}
+
+# maps microtonal note numbers to default letter names (* quarter sharp, + sharp, _ quarter flat, - flat)
+_letter_map24 = {
+    0: ('C',),
+    1: ('C*',),
+    2: ('C+', 'D-'),
+    3: ('D_'),
+    4: ('D',),
+    5: ('D*',),
+    6: ('D+', 'E-'),
+    7: ('E_',),
+    8: ('E',),
+    9: ('F_',),
+    10: ('F',),
+    11: ('F*',),
+    12: ('F+', 'G-'),
+    13: ('G_',),
+    14: ('G',),
+    15: ('G*',),
+    16: ('G+', 'A-'),
+    17: ('A_',),
+    18: ('A',),
+    19: ('A*',),
+    20: ('A+', 'B-'),
+    21: ('B_',),
+    22: ('B',),
+    23: ('B*',)
+}
 
 
 class PitchClass:
@@ -127,6 +174,19 @@ class PitchClass:
             raise TypeError("PitchClasses can only be subtracted by other PitchClasses of the same modulo, or by integers.")
 
     @property
+    def letter(self):
+        """
+        Gets the letter name of the pitch class
+        :return: The letter name (or None if the mod is not 12 or 24)
+        """
+        if self._mod == 12:
+            return _letter_map12[self.pc]
+        elif self._mod == 24:
+            return _letter_map24[self.pc]
+        else:
+            return None
+
+    @property
     def mod(self):
         """
         The pitch-class modulo
@@ -169,7 +229,11 @@ class PitchClass:
 
 class Pitch(PitchClass):
     """
-    Represents a pitch
+    Represents a pitch. Pitches are stored as integer numbers where 60 is always C4.
+    The caveat is that in 24-tone equal temperament, octaves are size 24 instead of 12,
+    so if you want consistent MIDI numbers, you should use the `midi` property to extract
+    the pitch value, as this will be updated with fractional pitch numbers as needed.
+    The `p` property is always an integer.
     """
     def __init__(self, p: int=0, pc_mod: int=12, pname: str=0):
         """
@@ -274,19 +338,21 @@ class Pitch(PitchClass):
             raise TypeError("Pitches can only be subtracted by other Pitches of the same PitchClass modulo, or by integers.")
 
     @property
-    def midi(self) -> int:
+    def midi(self):
         """
-        A wrapper for getting the MIDI value (at this point, the pitch integer is the same as the MIDI number)
-        :returns: The MIDI number of the pitch (same as the pitch)
+        A wrapper for getting the MIDI value (which may be a float if the mod value is something other than 12)
+        :returns: The MIDI number of the pitch
         """
+        warnings.warn("The `midi` property is not properly implemented for mod values other than 12.")
         return self._p
     
     @midi.setter
-    def midi(self, value: int):
+    def midi(self, value):
         """
-        Sets the pitch integer
-        :param value: The new pitch integer
+        Updates the MIDI value and calculates the new pitch integer
+        :param value: The new MIDI value
         """
+        warnings.warn("The `midi` property is not properly implemented for mod values other than 12.")
         self._p = value
         self.pc = self._p
     
@@ -310,6 +376,14 @@ class Pitch(PitchClass):
         """
         self._p = value + 60
         self.pc = self._p
+
+    @property
+    def octave(self) -> int:
+        """
+        Gets the octave number (where C4 is middle C)
+        :return: The octave number
+        """
+        return (self.midi - 60) // 12 + 4
 
     @property
     def p(self) -> int:

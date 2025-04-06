@@ -343,8 +343,14 @@ class Pitch(PitchClass):
         A wrapper for getting the MIDI value (which may be a float if the mod value is something other than 12)
         :returns: The MIDI number of the pitch
         """
-        warnings.warn("The `midi` property is not properly implemented for mod values other than 12.")
-        return self._p
+        if self.mod == 12:
+            return self._p
+        else:
+            # make a linear mapping from mod 12 to mod whatever
+            # (basically we are shifting the origin of the xy plane from (0,0) to (60,60))
+            coef = 12 / self.mod
+            const = -60 * coef + 60
+            return coef * self._p + const
     
     @midi.setter
     def midi(self, value):
@@ -352,9 +358,20 @@ class Pitch(PitchClass):
         Updates the MIDI value and calculates the new pitch integer
         :param value: The new MIDI value
         """
-        warnings.warn("The `midi` property is not properly implemented for mod values other than 12.")
-        self._p = value
-        self.pc = self._p
+        if self.mod == 12:
+            self._p = value
+            self.pc = self._p
+        else:
+            # make a linear mapping from mod 12 to mod whatever
+            # (basically we are shifting the origin of the xy plane from (0,0) to (60,60))
+            if self.mod % 12 == 0:
+                coef = self.mod // 12
+            else:
+                coef = self.mod / 12
+            const = -60 * coef + 60
+            self._p = coef * value + const
+            self.pc = self._p
+
     
     @property
     def morris(self) -> int:

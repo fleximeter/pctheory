@@ -22,6 +22,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
 from pctheory.pitch import PitchClass
+import re
 
 
 class OTO:
@@ -175,87 +176,104 @@ class UTO:
     [0] is the index of transposition. [1] is the multiplier. Multiplication is performed first,
     then transposition.
     """
-    def __init__(self, T: int = 0, M: int = 1):
+    def __init__(self, T=0, M=1):
         """
         Creates a UTO
         :param T: The index of transposition
         :param M: The index of multiplication
         """
-        self._uto = (T, M)
+        if type(T) == str:
+            if transformation_string := re.fullmatch(r'T(\d|10|11)(I|MI|M(\d+)?)?', T):
+                g = transformation_string.groups()
+                if g[2]:
+                    self._t = int(g[0])
+                    self._m = int(g[2])
+                elif not g[1]:
+                    self._t = int(g[0])
+                    self._m = 1
+                elif g[1] == 'I':
+                    self._t = int(g[0])
+                    self._m = 11
+                elif g[1] == 'M':
+                    self._t = int(g[0])
+                    self._m = 5
+                elif g[1] == 'MI':
+                    self._t = int(g[0])
+                    self._m = 7
+            else:
+                raise ValueError("The transformation string is invalid.")
+        elif type(T) == int and type(M) == int:
+            self._t = T
+            self._m = M
+        else:
+            raise TypeError("The T and M values must be integers, or the T value must be a transformation string.")
 
     def __eq__(self, other):
-        return self._uto[0] == other.uto[0] and self._uto[1] == other.uto[1]
-
-    def __getitem__(self, item):
-        return self._uto[item]
+        return self._t == other._t and self._m == other._m
 
     def __ge__(self, other):
-        if self._uto[1] > other._uto[1]:
+        if self._m > other._m:
             return True
-        elif self._uto[1] == other._uto[1] and self._uto[0] >= other._uto[0]:
+        elif self._m == other._m and self._t >= other._t:
             return True
         else:
             return False
 
     def __gt__(self, other):
-        if self._uto[1] > other._uto[1]:
+        if self._m > other._m:
             return True
-        elif self._uto[1] == other._uto[1] and self._uto[0] > other._uto[0]:
+        elif self._m == other._m and self._t > other._t:
             return True
         else:
             return False
 
     def __hash__(self):
-        return self._uto[0] * 100 + self._uto[1]
+        return self._t * 100 + self._m
 
     def __le__(self, other):
-        if self._uto[1] < other._uto[1]:
+        if self._m < other._m:
             return True
-        elif self._uto[1] == other._uto[1] and self._uto[0] <= other._uto[0]:
+        elif self._m == other._m and self._t <= other._t:
             return True
         else:
             return False
 
     def __lt__(self, other):
-        if self._uto[1] < other._uto[1]:
+        if self._m < other._m:
             return True
-        elif self._uto[1] == other._uto[1] and self._uto[0] < other._uto[0]:
+        elif self._m == other._m and self._t < other._t:
             return True
         else:
             return False
 
     def __ne__(self, other):
-        return self._uto[0] != other.uto[0] or self._uto[1] != other.uto[1]
+        return self._t != other._t or self._m != other._m
 
     def __repr__(self):
-        if self._uto[1] != 1:
-            return f"T{self._uto[0]}M{self._uto[1]}"
+        if self._m != 1:
+            return f"T{self._t}M{self._m}"
         else:
-            return f"T{self._uto[0]}"
+            return f"T{self._t}"
 
     def __str__(self):
-        if self._uto[1] != 1:
-            return f"T{self._uto[0]}M{self._uto[1]}"
+        if self._m != 1:
+            return f"T{self._t}M{self._m}"
         else:
-            return f"T{self._uto[0]}"
+            return f"T{self._t}"
+    
+    @property
+    def T(self):
+        """
+        Gets the transposition of the UTO
+        """
+        return self._t
 
     @property
-    def uto(self):
+    def M(self):
         """
-        Gets the UTO as a list. Index 0 is the index of transposition, and index 1
-        is the multiplier.
-        :return: The UTO
+        Gets the multiplication of the UTO
         """
-        return self._uto
-
-    @uto.setter
-    def uto(self, value):
-        """
-        Sets the UTO using a tuple
-        :param value: A tuple
-        :return:
-        """
-        self._uto = value
+        return self._m
 
     def cycles(self, mod: int = 12) -> list:
         """
@@ -268,15 +286,15 @@ class UTO:
         while len(int_list) > 0:
             cycle = [int_list[0]]
             pc = cycle[0]
-            pc = (pc * self._uto[1] + self._uto[0]) % mod
+            pc = (pc * self._m + self._t) % mod
             while pc != cycle[0]:
                 cycle.append(pc)
                 int_list.remove(pc)
                 pc = cycle[len(cycle) - 1]
-                pc = (pc * self._uto[1] + self._uto[0]) % mod
-            cycles.append(cycle)
+                pc = (pc * self._m + self._t) % mod
+            cycles.append(tuple(cycle))
             del int_list[0]
-        return cycles
+        return tuple(cycles)
 
     def inverse(self, mod: int = 12) -> 'UTO':
         """
@@ -284,9 +302,9 @@ class UTO:
         :param mod: The number of possible pcs in the system
         :return: The inverse
         """
-        return UTO((-self._uto[1] * self._uto[0]) % mod, self._uto[1])
+        return UTO((-self._m * self._t) % mod, self._m)
 
-    def transform(self, item):
+    def __call__(self, item):
         """
         Transforms a pcset, pcseg, or pc
         :param item: A pcset, pcseg, or pc
@@ -294,7 +312,7 @@ class UTO:
         """
         t = type(item)
         if t == PitchClass:
-            return PitchClass(item.pc * self._uto[1] + self._uto[0], item.mod)
+            return PitchClass(item.pc * self._m + self._t, item.mod)
         else:
             new_item = t()
             if t == set:
@@ -304,6 +322,9 @@ class UTO:
                 for i in item:
                     new_item.append(self.transform(i))
             return new_item
+        
+    def transform(self, item):
+        return self.__call__(item)
 
 
 def find_otos(pcseg1: list, pcseg2: list):

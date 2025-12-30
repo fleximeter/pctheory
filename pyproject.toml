@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools"]
+requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -17,11 +17,17 @@ dependencies = [
     "networkx",
     "pyvis",
 ]
+license = "MIT AND (Apache-2.0 OR BSD-2-Clause)"
 classifiers = [
     "Development Status :: 3 - Alpha",
-    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
     "Operating System :: OS Independent"
 ]
 
 [project.urls]
 "Homepage" = "https://fleximeter.github.io/pctheory.html"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+pctheory = ["data/*.json"]

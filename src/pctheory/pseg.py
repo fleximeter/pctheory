@@ -21,7 +21,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-from .pitch import Pitch, PitchClass
+from pctheory.pitch import Pitch, PitchClass
 
 
 def intervals(pseg: list) -> list:

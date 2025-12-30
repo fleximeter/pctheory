@@ -21,8 +21,8 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-from . import transformations, util
-from .pitch import Pitch, PitchClass
+import transformations, util
+from pctheory.pitch import Pitch, PitchClass
 import numpy as np
 import random
 

@@ -21,8 +21,8 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-from . import pcset, tables, transformations
-from .pitch import PitchClass
+from pctheory import pcset, tables, transformations
+from pctheory.pitch import PitchClass
 import random
 
 _rng = random.Random()

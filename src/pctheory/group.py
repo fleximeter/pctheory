@@ -22,9 +22,9 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
 from queue import Queue
-from . import transformations
-from .transformations import UTO
-from .pitch import PitchClass
+from pctheory import transformations
+from pctheory.transformations import UTO
+from pctheory.pitch import PitchClass
 
 
 class OperatorGroup:

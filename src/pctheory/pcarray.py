@@ -21,9 +21,9 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-from . import transformations
-from . import pcseg as ps
-from .pitch import PitchClass
+from pctheory import transformations
+import pctheory.pcseg as ps
+from pctheory.pitch import PitchClass
 
 class RotationalArray:
     """

@@ -23,8 +23,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from networkx import DiGraph
 import pyvis
-from . import tables, transformations
-from .pitch import PitchClass
+from pctheory import tables, transformations
+from pctheory.pitch import PitchClass
 import numpy as np
 import re
 
@@ -36,15 +36,21 @@ class SetClass:
     """
     Represents a pc-set-class.
     """
-    def __init__(self, pcset=None, pc_mod: int = 12):
+    def __init__(self, pcset=None, pc_mod=None):
         """
         Creates a SetClass.
         :param pcset: A pcset to initialize the SetClass
         """
-        if pcset is not None and len(pcset) > 0:
-            self._NUM_PC = next(iter(pcset)).mod
+        if pc_mod is not None:
+            if type(pc_mod) == int:
+                self._NUM_PC = pc_mod
+            else:
+                raise TypeError("The pitch class modulo must be an integer.")
         else:
-            self._NUM_PC = pc_mod
+            self._NUM_PC = 12
+        if pcset is not None:
+            if type(pcset) in [set, list] and len(pcset) > 0 and pc_mod is None:
+                self._NUM_PC = next(iter(pcset)).mod
         self._dsym = self._NUM_PC * 2
         self._ic_vector = [0 for i in range(self._NUM_PC // 2)]
         self._ic_vector_long = [0 for i in range(self._NUM_PC // 2 + 1)]
@@ -56,7 +62,13 @@ class SetClass:
         self._pcset = set()
         self._weight_right = True
         if pcset is not None:
-            self.pcset = pcset
+            if type(pcset) in [set, list]:
+                self.pcset = pcset
+            elif type(pcset) == str:
+                self.load_from_name(pcset)
+            else:
+                raise TypeError("The pitch class set must be a set/list of PitchClasses or integers, or else it must be a valid set-class name.")
+
 
     def __eq__(self, other):
         if type(other) == SetClass:

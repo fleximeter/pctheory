@@ -21,7 +21,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-from .pcset import SetClass
+from pctheory.pcset import SetClass
 
 
 set_classes12 = SetClass.get_set_classes12()

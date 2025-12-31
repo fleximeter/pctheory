@@ -13,11 +13,11 @@ pctheory.transformations
         Gets the ``OTO`` as a tuple. Index 0 is the index of transposition, index 1 is whether or not to retrograde, and
         index 2 is the multiplier.
 
-    .. py:method:: __init__(self, T: int = 0, R: int = 0, M: int = 1)
+    .. py:method:: __init__(self, T=0, R=False, M=1)
         
         Creates an ``OTO``.
         
-        :param int T: The index of transposition
+        :param int T: The index of transposition. Alternately, the OTO may be provided as a transformation string (e.g. "T5I").
         :param int R: Whether or not to retrograde
         :param int M: The multiplier
         
@@ -28,14 +28,6 @@ pctheory.transformations
         :param OTO other: The other ``OTO``
         :return: ``True`` or ``False``
         :rtype: bool
-
-    .. py:method:: __getitem__(self, item)
-
-        Gets the multiplier, retrograde flag, or adder of this ``OTO``.
-        
-        :param int item: The index to retrieve
-        :return: The multiplier, retrograde flag, or adder
-        :rtype: int
 
     .. py:method:: __ge__(self, other)
 
@@ -94,11 +86,18 @@ pctheory.transformations
         Gets a representation of this ``OTO``.
 
         :return: A representation
-
+    
     .. py:method:: transform(self, item)
         
         Transforms an item (can be a pitch-class, list, set, or any number of nestings of these objects).
         
+        :param item: An item
+        :return: The transformed item
+
+    .. py:method:: __call__(self, item)
+        
+        Same as OTO.transform().
+
         :param item: An item
         :return: The transformed item
 
@@ -111,11 +110,11 @@ pctheory.transformations
 
         Gets the UTO as a list.
 
-    .. py:method:: __init__(self, T: int = 0, M: int = 1)
+    .. py:method:: __init__(self, T=0, M=1)
         
         Creates a UTO
         
-        :param int T: The index of transposition
+        :param int T: The index of transposition. Alternately, the UTO may be provided as a transformation string (e.g. "T5I").
         :param int M: The index of multiplication
         
     .. py:method:: __eq__(self, other)
@@ -125,14 +124,6 @@ pctheory.transformations
         :param UTO other: The other ``UTO``
         :returns: ``True`` or ``False``
         :rtype: bool
-
-    .. py:method:: __getitem__(self, item)
-
-        Gets the multiplier or adder of this ``UTO``.
-        
-        :param int item: The index to retrieve
-        :return: The multiplier or adder
-        :rtype: int
 
     .. py:method:: __ge__(self, other)
 
@@ -211,6 +202,13 @@ pctheory.transformations
     .. py:method:: transform(self, item)
         
         Transforms a pcset, pcseg, or pc.
+        
+        :param item: A pcset, pcseg, or pc
+        :return: The transformed item
+
+    .. py:method:: __call__(self, item)
+        
+        Same as UTO.transform().
         
         :param item: A pcset, pcseg, or pc
         :return: The transformed item

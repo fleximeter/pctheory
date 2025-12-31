@@ -879,7 +879,7 @@ class InvarianceMatrix:
         """
         return self._mx[i]
 
-    def _load_matrix(self, a: list, c: list):
+    def load_matrix(self, a: list, c: list):
         """
         Loads the matrix.
         :param a: Pcseg A

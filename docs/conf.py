@@ -7,9 +7,9 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = 'pctheory'
-copyright = '2024, Jeff Martin'
+copyright = '2025, Jeff Martin'
 author = 'Jeff Martin'
-release = '0.0.41'
+release = '0.0.43'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration

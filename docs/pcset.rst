@@ -67,11 +67,12 @@ pctheory.pcset
         Whether or not to calculate the prime form by weighting candidate pitch-class sets from the right (default: ``True``).
         This does not affect the prime form of the vast majority of mod 12 set-classes.
 
-    .. py:method:: __init__(self, pcset=None, pc_mod: int=12)
+    .. py:method:: __init__(self, pcset=None, pc_mod=None)
         
         Creates a SetClass
         
-        :param pcset: A pcset to initialize the SetClass
+        :param pcset: A pcset to initialize the SetClass, or else the prime form name of the SetClass.
+        :param pc_mod: The modulo of the SetClass. If none is provided, it will be assumed from the pcset. If no pcset is provided, 12 is assumed.
 
     .. py:method:: __eq__(self, other)
 

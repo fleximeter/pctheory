@@ -1,9 +1,104 @@
 import unittest
-from pctheory import pcset
+from pctheory import pcset, pcseg
 from pctheory.pcset import SetClass
 from pctheory.pitch import PitchClass
 from pctheory import transformations
-from pctheory.transformations import UTO
+from pctheory.transformations import OTO, UTO
+
+class OTOTestCase(unittest.TestCase):
+    """
+    Tests mod 12 OTOs.
+    """
+    def test_creation(self):
+        """
+        Tests making OTOs
+        """
+        o = OTO()
+        self.assertEqual(o.T, 0)
+        self.assertEqual(o.R, False)
+        self.assertEqual(o.M, 1)
+        o = OTO(5, True, 11)
+        self.assertEqual(o.T, 5)
+        self.assertEqual(o.R, True)
+        self.assertEqual(o.M, 11)
+        o = OTO("T5")
+        self.assertEqual(o.T, 5)
+        self.assertEqual(o.R, False)
+        self.assertEqual(o.M, 1)
+        o = OTO("T5R")
+        self.assertEqual(o.T, 5)
+        self.assertEqual(o.R, True)
+        self.assertEqual(o.M, 1)
+        o = OTO("T5RI")
+        self.assertEqual(o.T, 5)
+        self.assertEqual(o.R, True)
+        self.assertEqual(o.M, 11)
+        o = OTO("T5RM11")
+        self.assertEqual(o.T, 5)
+        self.assertEqual(o.R, True)
+        self.assertEqual(o.M, 11)
+        o = OTO("T5I")
+        self.assertEqual(o.T, 5)
+        self.assertEqual(o.R, False)
+        self.assertEqual(o.M, 11)
+        o = OTO("T5M11")
+        self.assertEqual(o.T, 5)
+        self.assertEqual(o.R, False)
+        self.assertEqual(o.M, 11)
+        o = OTO("T5RM5")
+        self.assertEqual(o.T, 5)
+        self.assertEqual(o.R, True)
+        self.assertEqual(o.M, 5)
+        o = OTO("T5RM")
+        self.assertEqual(o.T, 5)
+        self.assertEqual(o.R, True)
+        self.assertEqual(o.M, 5)
+        o = OTO("T5RM7")
+        self.assertEqual(o.T, 5)
+        self.assertEqual(o.R, True)
+        self.assertEqual(o.M, 7)
+        o = OTO("T5RMI")
+        self.assertEqual(o.T, 5)
+        self.assertEqual(o.R, True)
+        self.assertEqual(o.M, 7)
+        with self.assertRaises(ValueError):
+            OTO("T22")
+        with self.assertRaises(ValueError):
+            OTO("T2RR")
+        with self.assertRaises(ValueError):
+            OTO("T2MIX")
+        with self.assertRaises(TypeError):
+            OTO(5, 4, 9)
+    
+    def test_comparison(self):
+        """
+        Tests OTO comparison
+        """
+        self.assertEqual(OTO("T5RI"), OTO(5, True, 11))
+        self.assertEqual(OTO("T5R"), OTO(5, True, 1))
+        self.assertEqual(OTO("T5"), OTO(5, False, 1))
+        self.assertEqual(OTO("T5I"), OTO(5, False, 11))
+        self.assertNotEqual(OTO("T5RI"), OTO(5, False, 11))
+
+    def test_repr(self):
+        """
+        Tests OTO to string capability
+        """
+        self.assertEqual(str(OTO(4, False, 1)), "T4")
+        self.assertEqual(repr(OTO(4, True, 1)), "T4R")
+        self.assertEqual(str(OTO(2, False, 11)), "T2M11")
+        self.assertEqual(repr(OTO(2, True, 11)), "T2RM11")
+
+    def test_transform(self):
+        """
+        Tests applying OTO transformations
+        """
+        self.assertEqual(OTO("T5")(pcseg.make_pcseg12(2, 4, 9, 10)), pcseg.make_pcseg12(7, 9, 2, 3))
+        self.assertEqual(OTO("T5R")(pcseg.make_pcseg12(2, 4, 9, 10)), pcseg.make_pcseg12(3, 2, 9, 7))
+        self.assertEqual(OTO("T5RI")(pcseg.make_pcseg12(2, 4, 9, 10)), pcseg.make_pcseg12(7, 8, 1, 3))
+        self.assertEqual(OTO("T5RM11")(pcseg.make_pcseg12(2, 4, 9, 10)), pcseg.make_pcseg12(7, 8, 1, 3))
+        self.assertEqual(OTO("T5RM")(pcseg.make_pcseg12(2, 4, 9, 10)), pcseg.make_pcseg12(7, 2, 1, 3))
+        self.assertEqual(OTO("T5RM5")(pcseg.make_pcseg12(2, 4, 9, 10)), pcseg.make_pcseg12(7, 2, 1, 3))
 
 class UTOTestCase(unittest.TestCase):
     """
@@ -40,6 +135,14 @@ class UTOTestCase(unittest.TestCase):
         u = UTO("T3M7")
         self.assertEqual(u.T, 3)
         self.assertEqual(u.M, 7)
+        with self.assertRaises(ValueError):
+            UTO("T22")
+        with self.assertRaises(ValueError):
+            UTO("T2R")
+        with self.assertRaises(ValueError):
+            UTO("T2MIX")
+        with self.assertRaises(TypeError):
+            UTO(5, 'a')
     
     def test_transform(self):
         """

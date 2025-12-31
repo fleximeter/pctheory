@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name="pctheory"
-version = "0.0.42"
+version = "0.0.43"
 authors = [
     { name="Jeffrey Martin", email="jmartin@jeffreymartincomposer.com" },
 ]

@@ -32,106 +32,141 @@ class OTO:
     retrograde (0-no or 1-yes). [2] is the multiplier. Multiplication is performed first, then retrograding,
     then transposition. These operators can be used with pcsegs.
     """
-    def __init__(self, T: int = 0, R: int = 0, M: int = 1):
+    def __init__(self, T=0, R=False, M=1):
         """
         Creates an OTO
         :param T: The index of transposition
         :param R: Whether or not to retrograde
         :param M: The multiplier
         """
-        self._oto = (T, R, M)
+        if type(T) == str:
+            if transformation_string := re.fullmatch(r'T(\d|10|11)(R)?(I|MI|M(\d+)?)?', T):
+                g = transformation_string.groups()
+                if g[3]:
+                    self._t = int(g[0])
+                    self._m = int(g[3])
+                elif not g[2]:
+                    self._t = int(g[0])
+                    self._m = 1
+                elif g[2] == 'I':
+                    self._t = int(g[0])
+                    self._m = 11
+                elif g[2] == 'M':
+                    self._t = int(g[0])
+                    self._m = 5
+                elif g[2] == 'MI':
+                    self._t = int(g[0])
+                    self._m = 7
+                if g[1] == 'R':
+                    self._r = True
+                else:
+                    self._r = False
+            else:
+                raise ValueError("The transformation string is invalid.")
+        elif type(T) == int and type(M) == int and type(R) == bool:
+            self._t = T
+            self._r = R
+            self._m = M
+        else:
+            raise TypeError("The T and M values must be integers, and the R value " \
+                "must be a boolean, or the T value must be a transformation string.")
+
+
 
     def __eq__(self, other):
-        return self._oto[0] == other.oto[0] and self._oto[1] == other.oto[1] and self._oto[2] == other.oto[2]
-
-    def __getitem__(self, item):
-        return self._oto[item]
+        return self._t == other._t and self._r == other._r and self._m == other._m
     
     def __ge__(self, other):
-        if self._oto[1] > other._oto[1]:
+        if self._r > other._r:
             return True
-        elif self._oto[1] == other._oto[1] and self._oto[2] > other._oto[2]:
+        elif self._r == other._r and self._m > other._m:
             return True
-        elif self._oto[1] == other._oto[1] and self._oto[2] == other._oto[2] and self._oto[0] >= other._oto[0]:
+        elif self._r == other._r and self._m == other._m and self._t >= other._t:
             return True
         else:
             return False
         
     def __gt__(self, other):
-        if self._oto[1] > other._oto[1]:
+        if self._r > other._r:
             return True
-        elif self._oto[1] == other._oto[1] and self._oto[2] > other._oto[2]:
+        elif self._r == other._r and self._m > other._m:
             return True
-        elif self._oto[1] == other._oto[1] and self._oto[2] == other._oto[2] and self._oto[0] > other._oto[0]:
+        elif self._r == other._r and self._m == other._m and self._t > other._t:
             return True
         else:
             return False
     
     def __hash__(self):
-        return self._oto[0] * 1000 + self._oto[1] * 100 + self._oto[2]
+        return self._t * 1000 + self._r * 100 + self._m
 
     def __le__(self, other):
-        if self._oto[1] < other._oto[1]:
+        if self._r < other._r:
             return True
-        elif self._oto[1] == other._oto[1] and self._oto[2] < other._oto[2]:
+        elif self._r == other._r and self._m < other._m:
             return True
-        elif self._oto[1] == other._oto[1] and self._oto[2] == other._oto[2] and self._oto[0] <= other._oto[0]:
+        elif self._r == other._r and self._m == other._m and self._t <= other._t:
             return True
         else:
             return False
     
     def __lt__(self, other):
-        if self._oto[1] < other._oto[1]:
+        if self._r < other._r:
             return True
-        elif self._oto[1] == other._oto[1] and self._oto[2] < other._oto[2]:
+        elif self._r == other._r and self._m < other._m:
             return True
-        elif self._oto[1] == other._oto[1] and self._oto[2] == other._oto[2] and self._oto[0] < other._oto[0]:
+        elif self._r == other._r and self._m == other._m and self._t < other._t:
             return True
         else:
             return False
 
     def __ne__(self, other):
-        return self._oto[0] != other.oto[0] or self._oto[1] != other.oto[1] or self._oto[2] != other.oto[2]
+        return self._t != other._t or self._r != other._r or self._m != other._m
 
     def __repr__(self):
-        if self._oto[1] and self._oto[2] != 1:
-            return f"T{self._oto[0]}RM{self._oto[2]}"
-        elif self._oto[2] != 1:
-            return f"T{self._oto[0]}M{self._oto[2]}"
-        elif self._oto[1]:
-            return f"T{self._oto[0]}R"
+        if self._r and self._m != 1:
+            return f"T{self._t}RM{self._m}"
+        elif self._m != 1:
+            return f"T{self._t}M{self._m}"
+        elif self._r:
+            return f"T{self._t}R"
         else:
-            return f"T{self._oto[0]}"
+            return f"T{self._t}"
 
     def __str__(self):
-        if self._oto[1] and self._oto[2] != 1:
-            return f"T{self._oto[0]}RM{self._oto[2]}"
-        elif self._oto[2] != 1:
-            return f"T{self._oto[0]}M{self._oto[2]}"
-        elif self._oto[1]:
-            return f"T{self._oto[0]}R"
+        if self._r and self._m != 1:
+            return f"T{self._t}RM{self._m}"
+        elif self._m != 1:
+            return f"T{self._t}M{self._m}"
+        elif self._r:
+            return f"T{self._t}R"
         else:
-            return f"T{self._oto[0]}"
+            return f"T{self._t}"
 
     @property
-    def oto(self):
+    def T(self):
         """
-        Gets the OTO as a tuple. Index 0 is the index of transposition, index 1 is whether or not to retrograde, and
-        index 2 is the multiplier.
-        :return: The OTO
+        Gets the index of transposition of the OTO.
+        :return: The index of transposition
         """
-        return self._oto
+        return self._t
+    
+    @property
+    def R(self):
+        """
+        Gets the retrograde status of the OTO.
+        :return: The retrograde status
+        """
+        return self._r
+ 
+    @property
+    def M(self):
+        """
+        Gets the index of multiplication of the OTO.
+        :return: The index of multiplication
+        """
+        return self._m
 
-    @oto.setter
-    def oto(self, value):
-        """
-        Sets the OTO using a tuple
-        :param value: A tuple
-        :return:
-        """
-        self._oto = value
-
-    def transform(self, item):
+    def __call__(self, item):
         """
         Transforms an item (can be a pitch-class, list, set, or any number of nestings of these objects)
         :param item: An item
@@ -147,10 +182,10 @@ class OTO:
                 elif t == set:
                     new_item.append(self.transform(item2))
                 elif t == PitchClass:
-                    new_item.append(PitchClass(item2.pc * self._oto[2] + self._oto[0], item2.mod))
+                    new_item.append(PitchClass(item2.pc * self._m + self._t, item2.mod))
                 else:
                     raise ArithmeticError("Cannot transform a type other than a PitchClass.")
-            if self._oto[1]:
+            if self._r:
                 new_item.reverse()
         elif type(item) == set:
             new_item = set()
@@ -161,13 +196,15 @@ class OTO:
                 elif t == set:
                     new_item.add(self.transform(item2))
                 elif t == PitchClass:
-                    new_item.append(PitchClass(item2.pc * self._oto[2] + self._oto[0], item2.mod))
+                    new_item.append(PitchClass(item2.pc * self._m + self._t, item2.mod))
                 else:
                     raise ArithmeticError("Cannot transform a type other than a PitchClass.")
         else:
-            new_item = type(item)(item.pc * self._oto[2] + self._oto[0])
+            new_item = type(item)(item.pc * self._m + self._t)
         return new_item
 
+    def transform(self, item):
+        return __call__(item)
 
 class UTO:
     """
@@ -493,11 +530,11 @@ def left_multiply_utos(*args, mod: int = 12) -> UTO:
     elif len(utos) == 1:
         return utos[0]
     else:
-        n = utos[len(utos) - 1][0]
-        m = utos[len(utos)-1][1]
+        n = utos[len(utos) - 1].T
+        m = utos[len(utos)-1].M
         for i in range(len(utos)-2, -1, -1):
-            tr_n = utos[i][0]
-            mul_n = utos[i][1]
+            tr_n = utos[i].T
+            mul_n = utos[i].M
             m = m * mul_n
             n = mul_n * n + tr_n
         return UTO(n % mod, m % mod)
@@ -511,5 +548,5 @@ def make_uto_list(*args) -> list:
     """
     uto_list = []
     for uto in args:
-        uto_list.append(UTO(uto[0], uto[1]))
+        uto_list.append(UTO(uto.T, uto.M))
     return uto_list

@@ -3,9 +3,10 @@ pctheory.transformations
 
 .. py:class:: OTO
 
-    Represents an ordered tone operator. Originally called a "row operator" or "RO" by Morris, it has been renamed here because this class is also used with mod 24 ordered pitch successions ("pitch segments").
-    Objects of this class are subscriptable. [0] is the index of transposition. [1] is whether or not to retrograde (0-no or 1-yes). 
-    [2] is the multiplier. Multiplication is performed first, then retrograding, then transposition. The point at which retrogradation occurs does not affect the final result. 
+    Represents an ordered tone operator.
+    Originally called a "row operator" or "RO" by Morris, it has been renamed here because this class is 
+    also used with mod 24 ordered pitch successions ("pitch segments").
+    Multiplication is performed first, then transposition. 
     These operators can be used with pcsegs.
 
     .. py.property:: T
@@ -110,8 +111,10 @@ pctheory.transformations
 
 .. py:class:: UTO
 
-    Represents an unordered tone operator. This is a bijective mapping A -> B. Originally called a "twelve-tone operator" or "TTO" by Morris, it has been renamed here because this class is also used with mod 24 sets.
-    Objects of this class are subscriptable. [0] is the index of transposition. [1] is the multiplier. Multiplication is performed first, then transposition.
+    Represents an unordered tone operator. This is a bijective mapping A -> B.
+    Originally called a "twelve-tone operator" or "TTO" by Morris, it has been renamed here because this class is also used with mod 24 sets.
+    Multiplication is performed first, then transposition.
+    These operators can be used with pcsets or pcsegs.
 
     .. py.property:: T
         

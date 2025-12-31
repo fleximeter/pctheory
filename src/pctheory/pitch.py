@@ -22,16 +22,18 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
 _hex_map = {0: '0', 1: '1', 2: '2', 3: '3', 4: '4', 5: '5', 6: '6', 7: '7', 8: '8', 9: '9', 10: 'A', 11: 'B', 12: 'C', 13: 'D', 14: 'E', 15: 'F'}
-
+_reverse_hex_map = {'0': 0, '1': 1, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9, 'A': 10, 'B': 11, 'C': 12, 'D': 13, 'E': 14, 'F': 15}
 
 class PitchClass:
-    def __init__(self, pc: int=0, mod: int=12):
+    def __init__(self, pc=0, mod: int=12):
         """
         Creates a PitchClass
-        :param pc: The pitch class integer
+        :param pc: The pitch class (can be an integer or string)
         :param mod: The mod number (12 for default chromatic pitch-classes, 
         24 for quarter-tone pitch-classes)
         """
+        if type(pc) == str:
+            pc = _reverse_hex_map[pc]
         self._mod = mod
         self._pc = pc % mod
 

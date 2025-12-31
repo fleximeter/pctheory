@@ -22,8 +22,10 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
 from pctheory import pcset, tables, transformations
+from pctheory.transformations import OTO
 from pctheory.pitch import PitchClass
 import random
+import re
 
 _rng = random.Random()
 _rng.seed()
@@ -572,19 +574,34 @@ def is_ten_trichord_row(pcseg: list) -> bool:
         return False
 
 
-def make_pcseg12(*args) -> list:
+def make12(*args) -> list:
     """
     Makes a pcseg.
     :param args: Pcs
     :return: A pcseg
     *Compatible only with chromatic pcsegs
     """
-    if type(args[0]) == list:
-        args = args[0]
-    return [PitchClass(pc, 12) for pc in args]
+    if type(args[0]) == str:
+        pcset_str = args[0].upper()
+        pcset_str = re.sub(r'[\(\)\[\]\{\},\s]*', '', pcset_str)
+        return [PitchClass(pc, 12) for pc in pcset_str]
+    else:
+        if type(args[0]) == list:
+            args = args[0]
+        return [PitchClass(pc, 12) for pc in args]
 
 
-def make_pcseg24(*args) -> list:
+def make_pcseg12(*args) -> list:
+    """
+    Makes a pcseg. Alias for make12.
+    :param args: Pcs
+    :return: A pcseg
+    *Compatible only with chromatic pcsegs
+    """
+    return make12(*args)
+
+
+def make24(*args) -> list:
     """
     Makes a pcseg.
     :param args: Pcs
@@ -594,6 +611,16 @@ def make_pcseg24(*args) -> list:
     if type(args[0]) == list:
         args = args[0]
     return [PitchClass(pc, 24) for pc in args]
+
+
+def make_pcseg24(*args) -> list:
+    """
+    Makes a pcseg. Alias for make24.
+    :param args: Pcs
+    :return: A pcseg
+    *Compatible only with microtonal pcsegs
+    """
+    return make24(*args)
 
 
 def multiply(pcseg: list, n: int) -> list:
@@ -887,43 +914,43 @@ class InvarianceMatrix:
         :return: None
         """
         if len(a) > 0 and len(c) > 0:
-            ro = transformations.OTO()
+            ro = OTO()
             if a[0].mod == 12:
                 INVERT = 11
                 if self._mx_type == "T":
-                    ro.oto = [0, 0, (1 * INVERT) % 12]
+                    ro = OTO(0, False, (1 * INVERT) % 12)
                 elif self._mx_type == "M" or self._mx_type == "M5":
-                    ro.oto = [0, 0, (5 * INVERT) % 12]
+                    ro = OTO(0, False, (5 * INVERT) % 12)
                 elif self._mx_type == "MI" or self._mx_type == "M7":
-                    ro.oto = [0, 0, (7 * INVERT) % 12]
+                    ro = OTO(0, False, (7 * INVERT) % 12)
                 elif self._mx_type == "I" or self._mx_type == "M11":
-                    ro.oto = [0, 0, (11 * INVERT) % 12]
-                b = ro.transform(c)
+                    ro = OTO(0, False, (11 * INVERT) % 12)
+                b = ro(c)
             elif a[0].mod == 24:
                 INVERT = 23
                 if self._mx_type == "T":
-                    ro.oto = [0, 0, (1 * INVERT) % 24]
+                    ro = OTO(0, False, (1 * INVERT) % 24)
                 elif self._mx_type == "M5":
-                    ro.oto = [0, 0, (5 * INVERT) % 24]
+                    ro = OTO(0, False, (5 * INVERT) % 24)
                 elif self._mx_type == "M7":
-                    ro.oto = [0, 0, (7 * INVERT) % 24]
+                    ro = OTO(0, False, (7 * INVERT) % 24)
                 elif self._mx_type == "M11":
-                    ro.oto = [0, 0, (11 * INVERT) % 24]
+                    ro = OTO(0, False, (11 * INVERT) % 24)
                 elif self._mx_type == "M13":
-                    ro.oto = [0, 0, (13 * INVERT) % 24]
+                    ro = OTO(0, False, (13 * INVERT) % 24)
                 elif self._mx_type == "M17":
-                    ro.oto = [0, 0, (17 * INVERT) % 24]
+                    ro = OTO(0, False, (17 * INVERT) % 24)
                 elif self._mx_type == "M19":
-                    ro.oto = [0, 0, (19 * INVERT) % 24]
+                    ro = OTO(0, False, (19 * INVERT) % 24)
                 elif self._mx_type == "I" or self._mx_type == "M23":
-                    ro.oto = [0, 0, (23 * INVERT) % 24]
-                b = ro.transform(c)
+                    ro = OTO(0, False, (23 * INVERT) % 24)
+                b = ro(c)
             else:
                 if self._mx_type == "T":
-                    ro.oto = [0, 0, 1 * (a[0].mod - 1) % a[0].mod]
+                    ro = OTO(0, False, 1 * (a[0].mod - 1) % a[0].mod)
                 elif self._mx_type == "I":
-                    ro.oto = [0, 0, 11 * (a[0].mod - 1) % a[0].mod]
-                b = ro.transform(c)
+                    ro = OTO(0, False, 11 * (a[0].mod - 1) % a[0].mod)
+                b = ro(c)
 
             self._mx = []
             for i in range(len(b)):

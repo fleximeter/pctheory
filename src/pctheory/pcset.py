@@ -25,6 +25,7 @@ from networkx import DiGraph
 import pyvis
 from pctheory import tables, transformations
 from pctheory.pitch import PitchClass
+from pctheory.transformations import UTO
 import numpy as np
 import re
 
@@ -369,7 +370,7 @@ class SetClass:
         :return: The abstract complement SetClass
         """
         complement_set_class = SetClass(pc_mod=self._NUM_PC)
-        complement_set_class.pcset = get_complement(self._pcset)
+        complement_set_class.pcset = get_complement(self._pcset, mod=self._NUM_PC)
         return complement_set_class
 
     def get_invariance_vector(self) -> list:
@@ -681,14 +682,20 @@ def get_all_combinatorial_hexachord(name: str) -> SetClass:
     *Only produces mod 12 SetClasses
     """
     sc = SetClass(pc_mod=12)
-    sc.load_from_name(name_tables["allCombinatorialHexachordNames"][name])
+    name = name.upper()
+    if "A" <= name <= "F":
+        sc.load_from_name(name_tables["allCombinatorialHexachordNames"][name])
+    else:
+        raise ValueError("All-combinatorial hexachords are labeled A-F.")
     return sc
 
 
-def get_complement(pcset: set) -> set:
+def get_complement(pcset: set, mod=None) -> set:
     """
     Gets the complement of a pcset.
+    If the pcset is empty, the mod parameter is required.
     :param pcset: A pcset
+    :param mod: The modulo of the pcset. If None, will be inferred.
     :return: The complement pcset
     *Compatible with all PitchClass modulos
     """
@@ -697,6 +704,11 @@ def get_complement(pcset: set) -> set:
         mod = next(iter(pcset)).mod
         for i in range(mod):
             universal.add(PitchClass(i, mod))
+    elif mod is not None:
+        for i in range(mod):
+            universal.add(PitchClass(i, mod))
+    else:
+        raise ValueError("Cannot generate the complement of an empty set if no mod is provided.")
     return universal - pcset
 
 
@@ -711,20 +723,19 @@ def get_complement_map_utos(pcset: set) -> set:
     mod = next(iter(pcset)).mod
     c = get_complement(pcset)
     if mod == 12:
-        uto = transformations.get_utos12()
         for i in range(12):
-            tx = uto[f"T{i}"].transform(pcset)
-            m5x = uto[f"T{i}M5"].transform(pcset)
-            m7x = uto[f"T{i}M7"].transform(pcset)
-            m11x = uto[f"T{i}M11"].transform(pcset)
+            tx = UTO(f"T{i}")(pcset)
+            m5x = UTO(f"T{i}M5")(pcset)
+            m7x = UTO(f"T{i}M7")(pcset)
+            m11x = UTO(f"T{i}M11")(pcset)
             if tx.issubset(c):
-                utos.add(uto[f"T{i}"])
+                utos.add(UTO(f"T{i}"))
             if m5x.issubset(c):
-                utos.add(uto[f"T{i}M5"])
+                utos.add(UTO(f"T{i}M5"))
             if m7x.issubset(c):
-                utos.add(uto[f"T{i}M7"])
+                utos.add(UTO(f"T{i}M7"))
             if m11x.issubset(c):
-                utos.add(uto[f"T{i}M11"])
+                utos.add(UTO(f"T{i}M11"))
     else:
         uto = transformations.get_utos24()
         for i in range(24):
@@ -872,18 +883,32 @@ def is_all_combinatorial_hexachord(pcset: set) -> bool:
         return False
 
 
-def make_pcset12(*args) -> set:
+def make12(*args) -> set:
     """
     Makes a chromatic pcset (mod 12).
     :param args: Integers that represent pitch classes
     :return: A pcset
     """
-    if type(args[0]) == list:
-        args = args[0]
-    return {PitchClass(pc, 12) for pc in args}
+    if type(args[0]) == str:
+        pcset_str = args[0].upper()
+        pcset_str = re.sub(r'[\(\)\[\]\{\},\s]*', '', pcset_str)
+        return {PitchClass(pc, 12) for pc in pcset_str}
+    else:
+        if type(args[0]) == list:
+            args = args[0]
+        return {PitchClass(pc, 12) for pc in args}
 
 
-def make_pcset24(*args) -> set:
+def make_pcset12(*args) -> set:
+    """
+    Makes a chromatic pcset (mod 12). Alias for make12.
+    :param args: Integers that represent pitch classes
+    :return: A pcset
+    """
+    return make12(*args)
+
+
+def make24(*args) -> set:
     """
     Makes a microtonal pcset (mod 24).
     :param args: Integers that represent pitch classes
@@ -892,6 +917,15 @@ def make_pcset24(*args) -> set:
     if type(args[0]) == list:
         args = args[0]
     return {PitchClass(pc, 24) for pc in args}
+
+
+def make_pcset24(*args) -> set:
+    """
+    Makes a microtonal pcset (mod 24). Alias for make24.
+    :param args: Integers that represent pitch classes
+    :return: A pcset
+    """
+    return make24(*args)
 
 
 def make_subset_graph(set_class: SetClass, smallest_cardinality: int = 1, show_graph: bool = False, size: tuple = (800, 1100)) -> DiGraph:

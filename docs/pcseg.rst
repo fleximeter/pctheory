@@ -233,7 +233,7 @@ pctheory.pcseg
     :return: Whether or not the pcseg is an "all-trichord" row (after Babbitt)
     *Compatible only with chromatic pcsegs
 
-.. py:function:: make_pcseg12(*args)
+.. py:function:: make12(*args)
     
     Makes a pcseg
     
@@ -241,9 +241,25 @@ pctheory.pcseg
     :return: A pcseg
     *Compatible only with chromatic pcsegs
 
-.. py:function:: make_pcseg24(*args)
+.. py:function:: make_pcseg12(*args)
+    
+    Makes a pcseg. Alias for make12.
+    
+    :param args: Pcs
+    :return: A pcseg
+    *Compatible only with chromatic pcsegs
+
+.. py:function:: make24(*args)
     
     Makes a pcseg
+    
+    :param args: Pcs
+    :return: A pcseg
+    *Compatible only with microtonal pcsegs
+
+.. py:function:: make_pcseg24(*args)
+    
+    Makes a pcseg. Alias for make24.
     
     :param args: Pcs
     :return: A pcseg

@@ -5,7 +5,7 @@ from pctheory.pitch import PitchClass
 from pctheory import transformations
 from pctheory.transformations import OTO, UTO
 
-class OTOTestCase(unittest.TestCase):
+class OTO12TestCase(unittest.TestCase):
     """
     Tests mod 12 OTOs.
     """
@@ -113,6 +113,7 @@ class OTOTestCase(unittest.TestCase):
         """
         Tests the OTO finder
         """
+        # Find complete transformations
         self.assertEqual(transformations.find_otos(pcseg.make_pcseg12(1, 2, 4, 0), pcseg.make_pcseg12(5, 6, 8, 4)), {OTO("T4")})
         self.assertEqual(transformations.find_otos(pcseg.make_pcseg12(1, 2, 3, 2, 1), pcseg.make_pcseg12(2, 3, 4, 3, 2)), {OTO("T1"), OTO("T1R")})
         self.assertEqual(transformations.find_otos(pcseg.make_pcseg12(1, 2, 3, 9, 10, 11), pcseg.make_pcseg12(4, 5, 6, 0, 1, 2)), {OTO("T3"), OTO("T3RI")})
@@ -120,8 +121,12 @@ class OTOTestCase(unittest.TestCase):
             {OTO("T1"), OTO("T1R"), OTO("T1M5"), OTO("T1RM5")})
         self.assertEqual(transformations.find_otos(pcseg.make_pcseg12(0, 2, 8, 2, 4), pcseg.make_pcseg12(3, 5, 11, 5, 7)),
             {OTO("T3"), OTO("T3M7"), OTO("T7RM5"), OTO("T7RM11")})
+        
+        # Find incomplete transformations
+        self.assertEqual(transformations.find_otos(pcseg.make_pcseg12(1, 2, 4, 0), pcseg.make_pcseg12(5, 6)), {OTO("T4"), OTO("T7RI")})
+        self.assertEqual(transformations.find_otos(pcseg.make_pcseg12(1, 2, 4, 0), pcseg.make_pcseg12(4, 6)), {OTO("T2"), OTO("T8RI"), OTO("T8RM5"), OTO("T2M7")})
 
-class UTOTestCase(unittest.TestCase):
+class UTO12TestCase(unittest.TestCase):
     """
     Tests mod 12 UTOs.
     """
@@ -254,6 +259,7 @@ class UTOTestCase(unittest.TestCase):
         """
         Tests the UTO finder
         """
+        # Find complete transformations
         self.assertEqual(transformations.find_utos(pcset.make_pcset12(3, 4, 8, 9), pcset.make_pcset12(5, 6, 10, 11)), 
             {UTO("T2"), UTO("T2M11"), UTO("T2M5"), UTO("T2M7")})
         self.assertEqual(transformations.find_utos(pcset.make_pcset12(3, 7, 8, 9), pcset.make_pcset12(1, 2, 3, 7)), 
@@ -265,6 +271,12 @@ class UTOTestCase(unittest.TestCase):
             UTO("T2M5"), UTO("T6M5"), UTO("T10M5"), UTO("T1M7"), UTO("T5M7"), UTO("T9M7")})
         self.assertEqual(transformations.find_utos(pcset.make_pcset12(3, 7, 8, 9), pcset.make_pcset12(1, 0, 3, 7)), 
             set())
+        
+        # Find incomplete transformations
+        self.assertEqual(transformations.find_utos(pcset.make_pcset12(3, 7, 8, 9), pcset.make_pcset12(4, 8)), 
+            {UTO("T1"), UTO("T11M11"), UTO("T5M5"), UTO("T7M7")})
+        self.assertEqual(transformations.find_utos(pcset.make_pcset12(3, 6, 4, 7), pcset.make_pcset12(5, 8)), 
+            {UTO("T1"), UTO("T2"), UTO("T0M11"), UTO("T11M11"), UTO("T2M5"), UTO("T9M5"), UTO("T4M7"), UTO("T11M7")})
 
 if __name__ == "__main__":
     unittest.main()

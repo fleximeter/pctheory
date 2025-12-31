@@ -250,19 +250,34 @@ pctheory.pcset
     :return: True or False
     *Only compatible with mod 12 SetClasses
 
-.. py:function:: make_pcset12(*args)
+.. py:function:: make12(*args)
     
     Makes a chromatic pcset (mod 12)
     
     :param args: Integers that represent pitch classes
     :return: A pcset
 
-.. py:function:: make_pcset24(*args)
+.. py:function:: make_pcset12(*args)
+    
+    Makes a chromatic pcset (mod 12). Alias for make12.
+    
+    :param args: Integers that represent pitch classes
+    :return: A pcset
+
+.. py:function:: make24(*args)
     
     Makes a microtonal pcset (mod 24)
 
     :param args: Integers that represent pitch classes
     :return: A pcset
+
+.. py:function:: make_pcset24(*args)
+    
+    Makes a microtonal pcset (mod 24). Alias for make24.
+
+    :param args: Integers that represent pitch classes
+    :return: A pcset
+
 
 .. py:function:: make_subset_graph(set_class, smallest_cardinality=1, show_graph=False, size=(800, 1100))
     

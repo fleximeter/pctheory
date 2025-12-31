@@ -2,6 +2,7 @@ import unittest
 from pctheory import pcset
 from pctheory.pcset import SetClass
 from pctheory.pitch import PitchClass
+from pctheory.transformations import UTO
 
 class SetClass12TestCase(unittest.TestCase):
     """
@@ -20,7 +21,7 @@ class SetClass12TestCase(unittest.TestCase):
         self.assertEqual(sc.ic_vector_str, "[212100]")
         self.assertEqual(sc.ic_vector_long, [4, 2, 1, 2, 1, 0, 0])
         self.assertEqual(sc.ic_vector_long_str, "[4212100]")
-        self.assertEqual(pcset.make_pcset12(0, 1, 3, 4), sc.pcset)
+        self.assertEqual(pcset.make12(0, 1, 3, 4), sc.pcset)
         self.assertEqual(sc.get_z_relation(), SetClass())
         self.assertEqual(sc.is_z_relation, False)
         self.assertEqual(scc.name_prime, "[01234569]")
@@ -30,7 +31,7 @@ class SetClass12TestCase(unittest.TestCase):
         self.assertEqual(scc.ic_vector_str, "[656542]")
         self.assertEqual(scc.ic_vector_long, [8, 6, 5, 6, 5, 4, 2])
         self.assertEqual(scc.ic_vector_long_str, "[8656542]")
-        self.assertEqual(pcset.make_pcset12(0, 1, 2, 3, 4, 5, 6, 9), scc.pcset)
+        self.assertEqual(pcset.make12(0, 1, 2, 3, 4, 5, 6, 9), scc.pcset)
         self.assertEqual(scc.get_z_relation(), SetClass())
         self.assertEqual(scc.is_z_relation, False)
         sc = SetClass("3-7")
@@ -42,7 +43,7 @@ class SetClass12TestCase(unittest.TestCase):
         self.assertEqual(sc.ic_vector_str, "[011010]")
         self.assertEqual(sc.ic_vector_long, [3, 0, 1, 1, 0, 1, 0])
         self.assertEqual(sc.ic_vector_long_str, "[3011010]")
-        self.assertEqual(pcset.make_pcset12(0, 2, 5), sc.pcset)
+        self.assertEqual(pcset.make12(0, 2, 5), sc.pcset)
         self.assertEqual(sc.get_z_relation(), SetClass())
         self.assertEqual(sc.is_z_relation, False)
         self.assertEqual(scc.name_prime, "[01234578A]")
@@ -52,7 +53,7 @@ class SetClass12TestCase(unittest.TestCase):
         self.assertEqual(scc.ic_vector_str, "[677673]")
         self.assertEqual(scc.ic_vector_long, [9, 6, 7, 7, 6, 7, 3])
         self.assertEqual(scc.ic_vector_long_str, "[9677673]")
-        self.assertEqual(pcset.make_pcset12(0, 1, 2, 3, 4, 5, 7, 8, 10), scc.pcset)
+        self.assertEqual(pcset.make12(0, 1, 2, 3, 4, 5, 7, 8, 10), scc.pcset)
         self.assertEqual(scc.get_z_relation(), SetClass())
         self.assertEqual(scc.is_z_relation, False)
         sc = SetClass("6-Z36")
@@ -64,7 +65,7 @@ class SetClass12TestCase(unittest.TestCase):
         self.assertEqual(sc.ic_vector_str, "[433221]")
         self.assertEqual(sc.ic_vector_long, [6, 4, 3, 3, 2, 2, 1])
         self.assertEqual(sc.ic_vector_long_str, "[6433221]")
-        self.assertEqual(pcset.make_pcset12(0, 1, 2, 3, 4, 7), sc.pcset)
+        self.assertEqual(pcset.make12(0, 1, 2, 3, 4, 7), sc.pcset)
         self.assertEqual(sc.get_z_relation(), scc)
         self.assertEqual(sc.is_z_relation, True)
         self.assertEqual(scc.name_prime, "[012356]")
@@ -74,7 +75,7 @@ class SetClass12TestCase(unittest.TestCase):
         self.assertEqual(scc.ic_vector_str, "[433221]")
         self.assertEqual(scc.ic_vector_long, [6, 4, 3, 3, 2, 2, 1])
         self.assertEqual(scc.ic_vector_long_str, "[6433221]")
-        self.assertEqual(pcset.make_pcset12(0, 1, 2, 3, 5, 6), scc.pcset)
+        self.assertEqual(pcset.make12(0, 1, 2, 3, 5, 6), scc.pcset)
         self.assertEqual(scc.get_z_relation(), sc)
         self.assertEqual(scc.is_z_relation, True)
 
@@ -83,7 +84,7 @@ class SetClass12TestCase(unittest.TestCase):
         Tests assignments sc.pcset = ...
         """
         sc = SetClass()
-        sc.pcset = pcset.make_pcset12(0, 1, 3, 4)
+        sc.pcset = pcset.make12(0, 1, 3, 4)
         scc = sc.get_abstract_complement()
         self.assertEqual(sc.name_prime, "[0134]")
         self.assertEqual(sc.name_forte, "4-3")
@@ -92,7 +93,7 @@ class SetClass12TestCase(unittest.TestCase):
         self.assertEqual(sc.ic_vector_str, "[212100]")
         self.assertEqual(sc.ic_vector_long, [4, 2, 1, 2, 1, 0, 0])
         self.assertEqual(sc.ic_vector_long_str, "[4212100]")
-        self.assertEqual(pcset.make_pcset12(0, 1, 3, 4), sc.pcset)
+        self.assertEqual(pcset.make12(0, 1, 3, 4), sc.pcset)
         self.assertEqual(sc.get_z_relation(), SetClass())
         self.assertEqual(sc.is_z_relation, False)
         self.assertEqual(scc.name_prime, "[01234569]")
@@ -102,10 +103,10 @@ class SetClass12TestCase(unittest.TestCase):
         self.assertEqual(scc.ic_vector_str, "[656542]")
         self.assertEqual(scc.ic_vector_long, [8, 6, 5, 6, 5, 4, 2])
         self.assertEqual(scc.ic_vector_long_str, "[8656542]")
-        self.assertEqual(pcset.make_pcset12(0, 1, 2, 3, 4, 5, 6, 9), scc.pcset)
+        self.assertEqual(pcset.make12(0, 1, 2, 3, 4, 5, 6, 9), scc.pcset)
         self.assertEqual(scc.get_z_relation(), SetClass())
         self.assertEqual(scc.is_z_relation, False)
-        sc.pcset = pcset.make_pcset12(0, 2, 5)
+        sc.pcset = pcset.make12(0, 2, 5)
         scc = sc.get_abstract_complement()
         self.assertEqual(sc.name_prime, "[025]")
         self.assertEqual(sc.name_forte, "3-7")
@@ -114,7 +115,7 @@ class SetClass12TestCase(unittest.TestCase):
         self.assertEqual(sc.ic_vector_str, "[011010]")
         self.assertEqual(sc.ic_vector_long, [3, 0, 1, 1, 0, 1, 0])
         self.assertEqual(sc.ic_vector_long_str, "[3011010]")
-        self.assertEqual(pcset.make_pcset12(0, 2, 5), sc.pcset)
+        self.assertEqual(pcset.make12(0, 2, 5), sc.pcset)
         self.assertEqual(sc.get_z_relation(), SetClass())
         self.assertEqual(sc.is_z_relation, False)
         self.assertEqual(scc.name_prime, "[01234578A]")
@@ -124,10 +125,10 @@ class SetClass12TestCase(unittest.TestCase):
         self.assertEqual(scc.ic_vector_str, "[677673]")
         self.assertEqual(scc.ic_vector_long, [9, 6, 7, 7, 6, 7, 3])
         self.assertEqual(scc.ic_vector_long_str, "[9677673]")
-        self.assertEqual(pcset.make_pcset12(0, 1, 2, 3, 4, 5, 7, 8, 10), scc.pcset)
+        self.assertEqual(pcset.make12(0, 1, 2, 3, 4, 5, 7, 8, 10), scc.pcset)
         self.assertEqual(scc.get_z_relation(), SetClass())
         self.assertEqual(scc.is_z_relation, False)
-        sc.pcset = pcset.make_pcset12(0, 1, 2, 3, 4, 7)
+        sc.pcset = pcset.make12(0, 1, 2, 3, 4, 7)
         scc = sc.get_abstract_complement()
         self.assertEqual(sc.name_prime, "[012347]")
         self.assertEqual(sc.name_forte, "6-Z36")
@@ -136,7 +137,7 @@ class SetClass12TestCase(unittest.TestCase):
         self.assertEqual(sc.ic_vector_str, "[433221]")
         self.assertEqual(sc.ic_vector_long, [6, 4, 3, 3, 2, 2, 1])
         self.assertEqual(sc.ic_vector_long_str, "[6433221]")
-        self.assertEqual(pcset.make_pcset12(0, 1, 2, 3, 4, 7), sc.pcset)
+        self.assertEqual(pcset.make12(0, 1, 2, 3, 4, 7), sc.pcset)
         self.assertEqual(sc.get_z_relation(), scc)
         self.assertEqual(sc.is_z_relation, True)
         self.assertEqual(scc.name_prime, "[012356]")
@@ -146,13 +147,13 @@ class SetClass12TestCase(unittest.TestCase):
         self.assertEqual(scc.ic_vector_str, "[433221]")
         self.assertEqual(scc.ic_vector_long, [6, 4, 3, 3, 2, 2, 1])
         self.assertEqual(scc.ic_vector_long_str, "[6433221]")
-        self.assertEqual(pcset.make_pcset12(0, 1, 2, 3, 5, 6), scc.pcset)
+        self.assertEqual(pcset.make12(0, 1, 2, 3, 5, 6), scc.pcset)
         self.assertEqual(scc.get_z_relation(), sc)
         self.assertEqual(scc.is_z_relation, True)
 
         # Other than prime form sets
         # This one needs to be transposed
-        sc.pcset = pcset.make_pcset12(3, 5, 4, 8)
+        sc.pcset = pcset.make12(3, 5, 4, 8)
         scc = sc.get_abstract_complement()
         self.assertEqual(sc.name_prime, "[0125]")
         self.assertEqual(sc.name_forte, "4-4")
@@ -161,7 +162,7 @@ class SetClass12TestCase(unittest.TestCase):
         self.assertEqual(sc.ic_vector_str, "[211110]")
         self.assertEqual(sc.ic_vector_long, [4, 2, 1, 1, 1, 1, 0])
         self.assertEqual(sc.ic_vector_long_str, "[4211110]")
-        self.assertEqual(pcset.make_pcset12(0, 1, 2, 5), sc.pcset)
+        self.assertEqual(pcset.make12(0, 1, 2, 5), sc.pcset)
         self.assertEqual(sc.get_z_relation(), SetClass())
         self.assertEqual(sc.is_z_relation, False)
         self.assertEqual(scc.name_prime, "[01234578]")
@@ -171,11 +172,11 @@ class SetClass12TestCase(unittest.TestCase):
         self.assertEqual(scc.ic_vector_str, "[655552]")
         self.assertEqual(scc.ic_vector_long, [8, 6, 5, 5, 5, 5, 2])
         self.assertEqual(scc.ic_vector_long_str, "[8655552]")
-        self.assertEqual(pcset.make_pcset12(0, 1, 2, 3, 4, 5, 7, 8), scc.pcset)
+        self.assertEqual(pcset.make12(0, 1, 2, 3, 4, 5, 7, 8), scc.pcset)
         self.assertEqual(scc.get_z_relation(), SetClass())
         self.assertEqual(scc.is_z_relation, False)
         # This one needs to be inverted and transposed
-        sc.pcset = pcset.make_pcset12(7, 9, 2, 4, 11)
+        sc.pcset = pcset.make12(7, 9, 2, 4, 11)
         scc = sc.get_abstract_complement()
         self.assertEqual(sc.name_prime, "[02479]")
         self.assertEqual(sc.name_forte, "5-35")
@@ -184,7 +185,7 @@ class SetClass12TestCase(unittest.TestCase):
         self.assertEqual(sc.ic_vector_str, "[032140]")
         self.assertEqual(sc.ic_vector_long, [5, 0, 3, 2, 1, 4, 0])
         self.assertEqual(sc.ic_vector_long_str, "[5032140]")
-        self.assertEqual(pcset.make_pcset12(0, 2, 4, 7, 9), sc.pcset)
+        self.assertEqual(pcset.make12(0, 2, 4, 7, 9), sc.pcset)
         self.assertEqual(sc.get_z_relation(), SetClass())
         self.assertEqual(sc.is_z_relation, False)
         self.assertEqual(scc.name_prime, "[013568A]")
@@ -194,7 +195,7 @@ class SetClass12TestCase(unittest.TestCase):
         self.assertEqual(scc.ic_vector_str, "[254361]")
         self.assertEqual(scc.ic_vector_long, [7, 2, 5, 4, 3, 6, 1])
         self.assertEqual(scc.ic_vector_long_str, "[7254361]")
-        self.assertEqual(pcset.make_pcset12(0, 1, 3, 5, 6, 8, 10), scc.pcset)
+        self.assertEqual(pcset.make12(0, 1, 3, 5, 6, 8, 10), scc.pcset)
         self.assertEqual(scc.get_z_relation(), SetClass())
         self.assertEqual(scc.is_z_relation, False)
 
@@ -203,28 +204,28 @@ class SetClass12TestCase(unittest.TestCase):
         Tests prime form calculation
         """
         # transpose only
-        self.assertEqual(SetClass.calculate_prime_form(pcset.make_pcset12(0, 2, 5)), pcset.make_pcset12(0, 2, 5))
-        self.assertEqual(SetClass.calculate_prime_form(pcset.make_pcset12(4, 5, 8, 0)), pcset.make_pcset12(0, 1, 4, 8))
-        self.assertEqual(SetClass.calculate_prime_form(pcset.make_pcset12(5, 7, 9, 1)), pcset.make_pcset12(0, 2, 4, 8))
-        self.assertEqual(SetClass.calculate_prime_form(pcset.make_pcset12(11, 1, 4, 7)), pcset.make_pcset12(0, 2, 5, 8))
-        self.assertEqual(SetClass.calculate_prime_form(pcset.make_pcset12(6, 7, 9, 10, 2)), pcset.make_pcset12(0, 1, 3, 4, 8))
-        self.assertEqual(SetClass.calculate_prime_form(pcset.make_pcset12(6, 7, 8, 9, 11, 2)), pcset.make_pcset12(0, 1, 2, 3, 5, 8))
+        self.assertEqual(SetClass.calculate_prime_form(pcset.make12(0, 2, 5)), pcset.make12(0, 2, 5))
+        self.assertEqual(SetClass.calculate_prime_form(pcset.make12(4, 5, 8, 0)), pcset.make12(0, 1, 4, 8))
+        self.assertEqual(SetClass.calculate_prime_form(pcset.make12(5, 7, 9, 1)), pcset.make12(0, 2, 4, 8))
+        self.assertEqual(SetClass.calculate_prime_form(pcset.make12(11, 1, 4, 7)), pcset.make12(0, 2, 5, 8))
+        self.assertEqual(SetClass.calculate_prime_form(pcset.make12(6, 7, 9, 10, 2)), pcset.make12(0, 1, 3, 4, 8))
+        self.assertEqual(SetClass.calculate_prime_form(pcset.make12(6, 7, 8, 9, 11, 2)), pcset.make12(0, 1, 2, 3, 5, 8))
 
         # transpose and invert
-        self.assertEqual(SetClass.calculate_prime_form(pcset.make_pcset12(4, 7, 9)), pcset.make_pcset12(0, 2, 5))
-        self.assertEqual(SetClass.calculate_prime_form(pcset.make_pcset12(2, 6, 9, 10)), pcset.make_pcset12(0, 1, 4, 8))
-        self.assertEqual(SetClass.calculate_prime_form(pcset.make_pcset12(2, 4, 7, 10)), pcset.make_pcset12(0, 2, 5, 8))
-        self.assertEqual(SetClass.calculate_prime_form(pcset.make_pcset12(0, 4, 5, 7, 8)), pcset.make_pcset12(0, 1, 3, 4, 8))
-        self.assertEqual(SetClass.calculate_prime_form(pcset.make_pcset12(4, 7, 9, 10, 11)), pcset.make_pcset12(0, 1, 2, 4, 7))
-        self.assertEqual(SetClass.calculate_prime_form(pcset.make_pcset12(10, 11, 2, 4, 5, 6)), pcset.make_pcset12(0, 1, 2, 4, 7, 8))
+        self.assertEqual(SetClass.calculate_prime_form(pcset.make12(4, 7, 9)), pcset.make12(0, 2, 5))
+        self.assertEqual(SetClass.calculate_prime_form(pcset.make12(2, 6, 9, 10)), pcset.make12(0, 1, 4, 8))
+        self.assertEqual(SetClass.calculate_prime_form(pcset.make12(2, 4, 7, 10)), pcset.make12(0, 2, 5, 8))
+        self.assertEqual(SetClass.calculate_prime_form(pcset.make12(0, 4, 5, 7, 8)), pcset.make12(0, 1, 3, 4, 8))
+        self.assertEqual(SetClass.calculate_prime_form(pcset.make12(4, 7, 9, 10, 11)), pcset.make12(0, 1, 2, 4, 7))
+        self.assertEqual(SetClass.calculate_prime_form(pcset.make12(10, 11, 2, 4, 5, 6)), pcset.make12(0, 1, 2, 4, 7, 8))
 
         # packing (https://mta.ca/pc-set/pages/pc-table/packed.html)
-        self.assertEqual(SetClass.calculate_prime_form(pcset.make_pcset12(3, 4, 8, 9, 11), True), pcset.make_pcset12(0, 1, 5, 6, 8))
-        self.assertEqual(SetClass.calculate_prime_form(pcset.make_pcset12(3, 4, 8, 9, 11), False), pcset.make_pcset12(0, 1, 3, 7, 8))
-        self.assertEqual(SetClass.calculate_prime_form(pcset.make_pcset12(3, 5, 6, 9, 10, 0), True), pcset.make_pcset12(0, 2, 3, 6, 7, 9))
-        self.assertEqual(SetClass.calculate_prime_form(pcset.make_pcset12(3, 5, 6, 9, 10, 0), False), pcset.make_pcset12(0, 1, 3, 6, 8, 9))
-        self.assertEqual(SetClass.calculate_prime_form(pcset.make_pcset12(1, 3, 4, 5, 8, 9, 10), True), pcset.make_pcset12(0, 1, 2, 5, 6, 7, 9))
-        self.assertEqual(SetClass.calculate_prime_form(pcset.make_pcset12(1, 3, 4, 5, 8, 9, 10), False), pcset.make_pcset12(0, 1, 2, 4, 7, 8, 9))
+        self.assertEqual(SetClass.calculate_prime_form(pcset.make12(3, 4, 8, 9, 11), True), pcset.make12(0, 1, 5, 6, 8))
+        self.assertEqual(SetClass.calculate_prime_form(pcset.make12(3, 4, 8, 9, 11), False), pcset.make12(0, 1, 3, 7, 8))
+        self.assertEqual(SetClass.calculate_prime_form(pcset.make12(3, 5, 6, 9, 10, 0), True), pcset.make12(0, 2, 3, 6, 7, 9))
+        self.assertEqual(SetClass.calculate_prime_form(pcset.make12(3, 5, 6, 9, 10, 0), False), pcset.make12(0, 1, 3, 6, 8, 9))
+        self.assertEqual(SetClass.calculate_prime_form(pcset.make12(1, 3, 4, 5, 8, 9, 10), True), pcset.make12(0, 1, 2, 5, 6, 7, 9))
+        self.assertEqual(SetClass.calculate_prime_form(pcset.make12(1, 3, 4, 5, 8, 9, 10), False), pcset.make12(0, 1, 2, 4, 7, 8, 9))
 
 
 class PcSetTestCase(unittest.TestCase):
@@ -235,25 +236,81 @@ class PcSetTestCase(unittest.TestCase):
         """
         Tests set creation
         """
-        self.assertEqual(pcset.make_pcset12(4, 2), {PitchClass(4), PitchClass(2)})
-        self.assertEqual(pcset.make_pcset12(3, 1, 20, -2), {PitchClass(3), PitchClass(1), PitchClass(20), PitchClass(-2)})
+        self.assertEqual(pcset.make12(4, 2), {PitchClass(4), PitchClass(2)})
+        self.assertEqual(pcset.make12("{42}"), {PitchClass(4), PitchClass(2)})
+        self.assertEqual(pcset.make12("{4, 2}"), {PitchClass(4), PitchClass(2)})
+        self.assertEqual(pcset.make12("[42]"), {PitchClass(4), PitchClass(2)})
+        self.assertEqual(pcset.make12("[4, 2]"), {PitchClass(4), PitchClass(2)})
+        self.assertEqual(pcset.make12("(42)"), {PitchClass(4), PitchClass(2)})
+        self.assertEqual(pcset.make12("(4, 2)"), {PitchClass(4), PitchClass(2)})
+        self.assertEqual(pcset.make12(3, 1, 20, -2), {PitchClass(3), PitchClass(1), PitchClass(20), PitchClass(-2)})
 
     def test_operations(self):
         """
         Tests basic operations
         """
-        self.assertEqual(pcset.transpose(pcset.make_pcset12(4, 2), 3), pcset.make_pcset12(7, 5))
-        self.assertEqual(pcset.transpose(pcset.make_pcset12(4, 2, 5), 13), pcset.make_pcset12(5, 3, 6))
-        self.assertEqual(pcset.transpose(pcset.make_pcset12(4, 2, 5), -4), pcset.make_pcset12(0, 10, 1))
-        self.assertEqual(pcset.transpose(pcset.make_pcset12(4, 2, 5), -13), pcset.make_pcset12(3, 1, 4))
-        self.assertEqual(pcset.multiply(pcset.make_pcset12(4, 2), 5), pcset.make_pcset12(8, 10))
-        self.assertEqual(pcset.multiply(pcset.make_pcset12(4, 2), 7), pcset.make_pcset12(4, 2))
-        self.assertEqual(pcset.multiply(pcset.make_pcset12(4, 2), 1), pcset.make_pcset12(4, 2))
-        self.assertEqual(pcset.multiply(pcset.make_pcset12(4, 2), 11), pcset.make_pcset12(8, 10))
-        self.assertEqual(pcset.multiply(pcset.make_pcset12(4, 2), -1), pcset.make_pcset12(8, 10))
-        self.assertEqual(pcset.invert(pcset.make_pcset12(4, 2)), pcset.make_pcset12(8, 10))
-        self.assertEqual(pcset.transform(pcset.make_pcset12(4, 2), "T5I"), pcset.make_pcset12(1, 3))
-        self.assertEqual(pcset.transform(pcset.make_pcset12(4, 2, 7), "T2I"), pcset.make_pcset12(10, 0, 7))
+        self.assertEqual(pcset.transpose(pcset.make12(4, 2), 3), pcset.make12(7, 5))
+        self.assertEqual(pcset.transpose(pcset.make12(4, 2, 5), 13), pcset.make12(5, 3, 6))
+        self.assertEqual(pcset.transpose(pcset.make12(4, 2, 5), -4), pcset.make12(0, 10, 1))
+        self.assertEqual(pcset.transpose(pcset.make12(4, 2, 5), -13), pcset.make12(3, 1, 4))
+        self.assertEqual(pcset.multiply(pcset.make12(4, 2), 5), pcset.make12(8, 10))
+        self.assertEqual(pcset.multiply(pcset.make12(4, 2), 7), pcset.make12(4, 2))
+        self.assertEqual(pcset.multiply(pcset.make12(4, 2), 1), pcset.make12(4, 2))
+        self.assertEqual(pcset.multiply(pcset.make12(4, 2), 11), pcset.make12(8, 10))
+        self.assertEqual(pcset.multiply(pcset.make12(4, 2), -1), pcset.make12(8, 10))
+        self.assertEqual(pcset.invert(pcset.make12(4, 2)), pcset.make12(8, 10))
+        self.assertEqual(pcset.transform(pcset.make12(4, 2), "T5I"), pcset.make12(1, 3))
+        self.assertEqual(pcset.transform(pcset.make12(4, 2, 7), "T2I"), pcset.make12(10, 0, 7))
+
+    def test_all_combinatorial_hexachords(self):
+        """
+        Tests all combinatorial hexachord generation
+        """
+        self.assertEqual(pcset.get_all_combinatorial_hexachord("A"), SetClass("[012345]"))
+        self.assertEqual(pcset.get_all_combinatorial_hexachord("B"), SetClass("[023457]"))
+        self.assertEqual(pcset.get_all_combinatorial_hexachord("C"), SetClass("[024579]"))
+        self.assertEqual(pcset.get_all_combinatorial_hexachord("D"), SetClass("[012678]"))
+        self.assertEqual(pcset.get_all_combinatorial_hexachord("E"), SetClass("[014589]"))
+        self.assertEqual(pcset.get_all_combinatorial_hexachord("F"), SetClass("[02468A]"))
+        with self.assertRaises(ValueError):
+            pcset.get_all_combinatorial_hexachord("G")
+    
+    def test_complement(self):
+        """
+        Tests set complement
+        """
+        self.assertEqual(pcset.get_complement(pcset.make12(1, 4, 6, 8)), pcset.make12(0, 2, 3, 5, 7, 9, 10, 11))
+        self.assertEqual(pcset.get_complement(pcset.make12(0, 5, 6, 7, 8, 9, 10)), pcset.make12(1, 2, 3, 4, 11))
+        self.assertEqual(pcset.get_complement(pcset.make12(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11)), set())
+        self.assertEqual(pcset.get_complement(set(), 12), pcset.make12(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11))
+    
+    def test_complement_map_utos(self):
+        """
+        Tests complement map UTO generation
+        """
+        self.assertEqual(pcset.get_complement_map_utos(pcset.make12("{0134}")),
+            {UTO("T5"), UTO("T6"), UTO("T7"), UTO("T9I"), UTO("T10I"), UTO("T11I"),
+            UTO("T2M5"), UTO("T6M5"), UTO("T2M7"), UTO("T10M7")})
+
+    def test_corpus(self):
+        """
+        Tests pcset corpus generation
+        """
+        corpus = pcset.get_corpus(pcset.make12("{014589}"))
+        self.assertEqual(len(corpus), 4)
+        self.assertEqual(corpus, {
+            frozenset(pcset.make12("{014589}")),
+            frozenset(pcset.make12("{12569A}")),
+            frozenset(pcset.make12("{2367AB}")),
+            frozenset(pcset.make12("{3478B0}")),
+        })
+    
+    def test_is_all_combinatorial(self):
+        """
+        Tests detection of all-combinatorial hexachords
+        """
+        self.assertTrue(pcset.is_all_combinatorial_hexachord(pcset.make12("{134568}")))
+        self.assertFalse(pcset.is_all_combinatorial_hexachord(pcset.make12("{012346}")))
 
 if __name__ == "__main__":
     unittest.main()

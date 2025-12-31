@@ -787,7 +787,7 @@ class InvarianceMatrix:
         self._c = None
         self._mx_type = mx_type.upper()
         self._mx = None
-        self._load_matrix(a, c)
+        self.load_matrix(a, c)
 
     def __getitem__(self, i: int, j: int) -> PitchClass:
         """

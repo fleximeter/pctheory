@@ -204,7 +204,7 @@ class OTO:
         return new_item
 
     def transform(self, item):
-        return __call__(item)
+        return self.__call__(item)
 
 class UTO:
     """
@@ -441,14 +441,14 @@ def get_otos12() -> list:
     """
     otos = {}
     for i in range(12):
-        otos[f"T{i}"] = OTO(i, 0, 1)
-        otos[f"T{i}R"] = OTO(i, 1, 1)
-        otos[f"T{i}M"] = OTO(i, 0, 5)
-        otos[f"T{i}RM"] = OTO(i, 1, 5)
-        otos[f"T{i}MI"] = OTO(i, 0, 7)
-        otos[f"T{i}RMI"] = OTO(i, 1, 7)
-        otos[f"T{i}I"] = OTO(i, 0, 11)
-        otos[f"T{i}RI"] = OTO(i, 1, 11)
+        otos[f"T{i}"] = OTO(i, False, 1)
+        otos[f"T{i}R"] = OTO(i, True, 1)
+        otos[f"T{i}M"] = OTO(i, False, 5)
+        otos[f"T{i}RM"] = OTO(i, True, 5)
+        otos[f"T{i}MI"] = OTO(i, False, 7)
+        otos[f"T{i}RMI"] = OTO(i, True, 7)
+        otos[f"T{i}I"] = OTO(i, False, 11)
+        otos[f"T{i}RI"] = OTO(i, True, 11)
     return otos
 
 

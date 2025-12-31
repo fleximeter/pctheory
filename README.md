@@ -21,6 +21,9 @@ If the `pip install` command fails, you will need to build the wheel yourself. C
 ## Quick start
 There are three Jupyter notebooks in this repository that you can consult to get started with `pctheory`.
 
+## Stability
+`pctheory` is currently in alpha status. This means that some functionality might not be stable yet. In particular, there isn't unit test coverage for the whole package at this point. However, the core functionality (pitch class operations, set-classes, and row functionality) does have test coverage and should be stable.
+
 ## System Requirements
 `pctheory` requires Python 3.10 or newer.
 

@@ -6,16 +6,10 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-import tomllib
-from pathlib import Path
-
-with open(Path(__file__).parents[1] / "pyproject.toml", 'r') as projfile:
-    pyproject = tomllib.load(projfile)
-
-project = pyproject["project"]["name"]
+project = 'pctheory'
 copyright = '2025, Jeff Martin'
 author = 'Jeff Martin'
-release = pyproject["project"]["version"]
+release = '0.0.44'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration

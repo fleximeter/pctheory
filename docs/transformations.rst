@@ -7,11 +7,18 @@ pctheory.transformations
     Objects of this class are subscriptable. [0] is the index of transposition. [1] is whether or not to retrograde (0-no or 1-yes). 
     [2] is the multiplier. Multiplication is performed first, then retrograding, then transposition. The point at which retrogradation occurs does not affect the final result. 
     These operators can be used with pcsegs.
-    
-    .. py:property:: oto
+
+    .. py.property:: T
         
-        Gets the ``OTO`` as a tuple. Index 0 is the index of transposition, index 1 is whether or not to retrograde, and
-        index 2 is the multiplier.
+        Gets the index of transposition.
+
+    .. py.property:: R
+        
+        If true, this OTO performs a retrograde.
+
+    .. py.property:: M
+        
+        Gets the index of multiplication.
 
     .. py:method:: __init__(self, T=0, R=False, M=1)
         
@@ -106,9 +113,13 @@ pctheory.transformations
     Represents an unordered tone operator. This is a bijective mapping A -> B. Originally called a "twelve-tone operator" or "TTO" by Morris, it has been renamed here because this class is also used with mod 24 sets.
     Objects of this class are subscriptable. [0] is the index of transposition. [1] is the multiplier. Multiplication is performed first, then transposition.
 
-    .. py:property:: uto
+    .. py.property:: T
+        
+        Gets the index of transposition.
 
-        Gets the UTO as a list.
+    .. py.property:: M
+        
+        Gets the index of multiplication.
 
     .. py:method:: __init__(self, T=0, M=1)
         

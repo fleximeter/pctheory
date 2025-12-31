@@ -100,6 +100,27 @@ class OTOTestCase(unittest.TestCase):
         self.assertEqual(OTO("T5RM")(pcseg.make_pcseg12(2, 4, 9, 10)), pcseg.make_pcseg12(7, 2, 1, 3))
         self.assertEqual(OTO("T5RM5")(pcseg.make_pcseg12(2, 4, 9, 10)), pcseg.make_pcseg12(7, 2, 1, 3))
 
+    def test_corpus(self):
+        """
+        Tests for retrieving the OTO corpus
+        """
+        corpus = transformations.get_otos12()
+        self.assertEqual(len(corpus), 12 * 8)
+        for name, oto in corpus.items():
+            self.assertEqual(oto, OTO(name))
+
+    def test_find_otos(self):
+        """
+        Tests the OTO finder
+        """
+        self.assertEqual(transformations.find_otos(pcseg.make_pcseg12(1, 2, 4, 0), pcseg.make_pcseg12(5, 6, 8, 4)), {OTO("T4")})
+        self.assertEqual(transformations.find_otos(pcseg.make_pcseg12(1, 2, 3, 2, 1), pcseg.make_pcseg12(2, 3, 4, 3, 2)), {OTO("T1"), OTO("T1R")})
+        self.assertEqual(transformations.find_otos(pcseg.make_pcseg12(1, 2, 3, 9, 10, 11), pcseg.make_pcseg12(4, 5, 6, 0, 1, 2)), {OTO("T3"), OTO("T3RI")})
+        self.assertEqual(transformations.find_otos(pcseg.make_pcseg12(0, 3, 0, 6, 0, 3, 0), pcseg.make_pcseg12(1, 4, 1, 7, 1, 4, 1)),
+            {OTO("T1"), OTO("T1R"), OTO("T1M5"), OTO("T1RM5")})
+        self.assertEqual(transformations.find_otos(pcseg.make_pcseg12(0, 2, 8, 2, 4), pcseg.make_pcseg12(3, 5, 11, 5, 7)),
+            {OTO("T3"), OTO("T3M7"), OTO("T7RM5"), OTO("T7RM11")})
+
 class UTOTestCase(unittest.TestCase):
     """
     Tests mod 12 UTOs.
@@ -204,6 +225,46 @@ class UTOTestCase(unittest.TestCase):
         self.assertEqual(UTO("T2").cycles(), ((0, 2, 4, 6, 8, 10), (1, 3, 5, 7, 9, 11)))
         self.assertEqual(UTO("T2I").cycles(), ((0, 2), (1,), (3, 11), (4, 10), (5, 9), (6, 8), (7,)))
         self.assertEqual(UTO("T9I").cycles(), ((0, 9), (1, 8), (2, 7), (3, 6), (4, 5), (10, 11)))
+
+    def test_corpus(self):
+        """
+        Tests for retrieving the UTO corpus
+        """
+        corpus = transformations.get_utos12()
+        self.assertEqual(len(corpus), 12 * 4)
+        for name, uto in corpus.items():
+            self.assertEqual(uto, UTO(name))
+    
+    def test_left_multiply(self):
+        """
+        Tests left-multiplication of UTOs
+        """
+        self.assertEqual(transformations.left_multiply_utos(UTO("T5"), UTO("T8")), UTO("T1"))
+        self.assertEqual(transformations.left_multiply_utos([UTO("T5"), UTO("T8")]), UTO("T1"))
+        self.assertEqual(transformations.left_multiply_utos(UTO("T5"), UTO("T8I")), UTO("T1I"))
+        self.assertEqual(transformations.left_multiply_utos([UTO("T5"), UTO("T8I")]), UTO("T1I"))
+        self.assertEqual(transformations.left_multiply_utos(UTO("T4I"), UTO("T4I")), UTO("T0"))
+        self.assertEqual(transformations.left_multiply_utos([UTO("T4I"), UTO("T4I")]), UTO("T0"))
+        self.assertEqual(transformations.left_multiply_utos(UTO("T5I"), UTO("T8I")), UTO("T9"))
+        self.assertEqual(transformations.left_multiply_utos([UTO("T5I"), UTO("T8I")]), UTO("T9"))
+        self.assertEqual(transformations.left_multiply_utos(UTO("T5I"), UTO("T2"), UTO("T8I")), UTO("T7"))
+        self.assertEqual(transformations.left_multiply_utos([UTO("T5I"), UTO("T2"), UTO("T8I")]), UTO("T7"))
+    
+    def test_find_utos(self):
+        """
+        Tests the UTO finder
+        """
+        self.assertEqual(transformations.find_utos(pcset.make_pcset12(3, 4, 8, 9), pcset.make_pcset12(5, 6, 10, 11)), 
+            {UTO("T2"), UTO("T2M11"), UTO("T2M5"), UTO("T2M7")})
+        self.assertEqual(transformations.find_utos(pcset.make_pcset12(3, 7, 8, 9), pcset.make_pcset12(1, 2, 3, 7)), 
+            {UTO("T10M11")})
+        self.assertEqual(transformations.find_utos(pcset.make_pcset12(1, 2, 3), pcset.make_pcset12(4, 5, 6)), 
+            {UTO("T3"), UTO("T7M11")})
+        self.assertEqual(transformations.find_utos(pcset.make_pcset12(1, 2, 5, 6, 9, 10), pcset.make_pcset12(3, 4, 7, 8, 11, 0)), 
+            {UTO("T2"), UTO("T6"), UTO("T10"), UTO("T1M11"), UTO("T5M11"), UTO("T9M11"),
+            UTO("T2M5"), UTO("T6M5"), UTO("T10M5"), UTO("T1M7"), UTO("T5M7"), UTO("T9M7")})
+        self.assertEqual(transformations.find_utos(pcset.make_pcset12(3, 7, 8, 9), pcset.make_pcset12(1, 0, 3, 7)), 
+            set())
 
 if __name__ == "__main__":
     unittest.main()

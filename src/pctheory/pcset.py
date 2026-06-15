@@ -795,17 +795,17 @@ def get_self_map_utos(pcset: set) -> set:
         uto = transformations.get_utos12()
         for i in range(12):
             tx = uto[f"T{i}"].transform(pcset)
-            m5x = uto[f"T{i}M5"].transform(pcset)
-            m7x = uto[f"T{i}M7"].transform(pcset)
-            m11x = uto[f"T{i}M11"].transform(pcset)
+            m5x = uto[f"T{i}M"].transform(pcset)
+            m7x = uto[f"T{i}MI"].transform(pcset)
+            m11x = uto[f"T{i}I"].transform(pcset)
             if tx == pcset:
                 utos.add(uto[f"T{i}"])
             if m5x == pcset:
-                utos.add(uto[f"T{i}M5"])
+                utos.add(uto[f"T{i}M"])
             if m7x == pcset:
-                utos.add(uto[f"T{i}M7"])
+                utos.add(uto[f"T{i}MI"])
             if m11x == pcset:
-                utos.add(uto[f"T{i}M11"])
+                utos.add(uto[f"T{i}I"])
     else:
         uto = transformations.get_utos24()
         for i in range(24):
@@ -997,7 +997,7 @@ def partitions2(pcset: set) -> list:
             if d not in partitions_dict:
                 partitions_dict[s] = d
     for s in partitions_dict:
-        partitions_list.append((set(s), set(partitions_dict[s])))
+        partitions_list.append({frozenset(s), frozenset(partitions_dict[s])})
     return partitions_list
 
 
@@ -1056,23 +1056,6 @@ def permutations(pcset: set) -> list:
                         flags[j] = 0
                 break
     return all_permutations
-
-
-def set_class_filter12(name: str, sets: list) -> list:
-    """
-    Filters a list of pcsets.
-    :param name: The name to find
-    :param sets: A list of sets to filter
-    :return: A filtered list
-    *Compatible with all PitchClass modulos. For pcsets of modulo 12, also supports Forte and Morris names.
-    """
-    newlist = []
-    sc = SetClass()
-    for s in sets:
-        sc.pcset = s
-        if sc.name_prime == name or sc.name_forte == name or sc.name_morris == name:
-            newlist.append(s)
-    return newlist
 
 
 def subsets(pcset: set) -> list:

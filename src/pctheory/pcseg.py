@@ -1007,7 +1007,7 @@ class TwelveToneMatrix:
     """
     Represents a twelve-tone matrix. Compatible only with mod 12 PitchClasses.
     """
-    def __init__(self, row=None):
+    def __init__(self, row):
         """
         Creates a twelve-tone matrix.
         :param row: A row to import
@@ -1018,8 +1018,26 @@ class TwelveToneMatrix:
         self._labels_bottom = []
         self._mx = []
         self._row = None
-        if row is not None:
-            self.import_row(row)
+
+        # Import the row
+        # We need the starting pitch to be 0 for the P0 form
+        self._row = transpose(row, -row[0].pc)
+        inv = invert(self._row)
+
+        # Build the matrix
+        for i in range(len(self._row)):
+            self._mx.append(transpose(self._row, inv[i].pc))
+
+        # Generate the labels
+        for i in range(len(self._row)):
+            p_lbl = self._mx[i][0] - self._mx[0][0]
+            i_lbl = self._mx[0][i] - self._mx[0][0]
+            r_lbl = self._mx[i][len(self._row) - 1] - self._mx[0][len(self._row) - 1]
+            ri_lbl = self._mx[len(self._row) - 1][i] - self._mx[len(self._row) - 1][0]
+            self._labels_bottom.append(f"T{ri_lbl.pc}RI")
+            self._labels_left.append(f"T{p_lbl.pc}")
+            self._labels_right.append(f"T{r_lbl.pc}R")
+            self._labels_top.append(f"T{i_lbl.pc}I")
 
     def __getitem__(self, i: int, j: int) -> PitchClass:
         """
@@ -1136,26 +1154,4 @@ class TwelveToneMatrix:
         :return: The row
         """
         return self._mx[i].copy()
-
-    def import_row(self, row: list):
-        """
-        Imports a row.
-        :param row: The row to import
-        :return:
-        """
-        # We need the starting pitch to be 0 for the P0 form
-        self._row = transpose(row, -row[0].pc)
-        inv = invert(self._row)
-
-        for i in range(len(self._row)):
-            self._mx.append(transpose(self._row, inv[i].pc))
-
-        for i in range(len(self._row)):
-            p_lbl = self._mx[i][0] - self._mx[0][0]
-            i_lbl = self._mx[0][i] - self._mx[0][0]
-            r_lbl = self._mx[i][len(self._row) - 1] - self._mx[0][len(self._row) - 1]
-            ri_lbl = self._mx[len(self._row) - 1][i] - self._mx[len(self._row) - 1][0]
-            self._labels_bottom.append(f"T{ri_lbl.pc}RI")
-            self._labels_left.append(f"T{p_lbl.pc}")
-            self._labels_right.append(f"T{r_lbl.pc}R")
-            self._labels_top.append(f"T{i_lbl.pc}I")
+    

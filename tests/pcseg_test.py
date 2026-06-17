@@ -1,5 +1,6 @@
 import unittest
 from pctheory import pcseg
+from pctheory.pcseg import make12
 from pctheory.pcset import SetClass
 from pctheory.pitch import PitchClass
 
@@ -31,6 +32,26 @@ class PcSegTestCase(unittest.TestCase):
         self.assertEqual(pcseg.rotate(pcseg.make_pcseg12(4, 2, 1, 3, 9, 8), 7), pcseg.make_pcseg12(8, 4, 2, 1, 3, 9))
         self.assertEqual(pcseg.rotate(pcseg.make_pcseg12(4, 2, 1, 3, 9, 8), -2), pcseg.make_pcseg12(1, 3, 9, 8, 4, 2))
         self.assertEqual(pcseg.rotate(pcseg.make_pcseg12(4, 2, 1, 3, 9, 8), -7), pcseg.make_pcseg12(2, 1, 3, 9, 8, 4))
+
+    def test_adjacent_search(self):
+        """
+        Tests adjacent search
+        """
+        rc = pcseg.get_row_class(pcseg.make12("(B10542A89637)"))
+        result = pcseg.adjacent_search(pcseg.make12("(1653)"), rc)
+        self.assertEqual(len(result), 1)
+        result = pcseg.adjacent_search(pcseg.make12("(36)"), rc)
+        self.assertEqual(len(result), 4)
+        result = pcseg.adjacent_search(pcseg.make12("(63)"), rc)
+        self.assertEqual(len(result), 4)
+
+    def test_intervals(self):
+        """
+        Tests interval functionality
+        """
+        self.assertEqual(pcseg.get_intervals(pcseg.make12(0, 4, 5, 7, 1, 2)), [4,1,2,-6,1])
+        self.assertEqual(pcseg.get_intervals(pcseg.make12(0, 3, 5, 1, 2, 10, 11, 9, 6, 8, 4, 7)), 
+            [3, 2, -4, 1, 8, 1, -2, -3, 2, -4, 3])
 
 class RowTestCase(unittest.TestCase):
     """
@@ -79,6 +100,74 @@ class RowTestCase(unittest.TestCase):
             self.assertEqual(len(scs), 10)
             self.assertTrue("[036]" not in scs)
             self.assertTrue("[048]" not in scs)
+
+    def test_row_class(self):
+        """
+        Tests row class creation
+        """
+        rc = pcseg.get_row_class(pcseg.make12("(0123456789AB)"))
+        self.assertEqual(rc, [
+            pcseg.make12("(0123456789AB)"),
+            pcseg.make12("(123456789AB0)"),
+            pcseg.make12("(23456789AB01)"),
+            pcseg.make12("(3456789AB012)"),
+            pcseg.make12("(456789AB0123)"),
+            pcseg.make12("(56789AB01234)"),
+            pcseg.make12("(6789AB012345)"),
+            pcseg.make12("(789AB0123456)"),
+            pcseg.make12("(89AB01234567)"),
+            pcseg.make12("(9AB012345678)"),
+            pcseg.make12("(AB0123456789)"),
+            pcseg.make12("(B0123456789A)"),
+            pcseg.make12("(0BA987654321)"),
+            pcseg.make12("(10BA98765432)"),
+            pcseg.make12("(210BA9876543)"),
+            pcseg.make12("(3210BA987654)"),
+            pcseg.make12("(43210BA98765)"),
+            pcseg.make12("(543210BA9876)"),
+            pcseg.make12("(6543210BA987)"),
+            pcseg.make12("(76543210BA98)"),
+            pcseg.make12("(876543210BA9)"),
+            pcseg.make12("(9876543210BA)"),
+            pcseg.make12("(A9876543210B)"),
+            pcseg.make12("(BA9876543210)"),
+        ])
+        self.assertEqual(len(rc), 24)
+
+    def test_combinatoriality(self):
+        """
+        Tests combinatoriality functions
+        """
+        self.assertTrue(pcseg.are_combinatorial2(
+            pcseg.make12("(0126783459AB)"),
+            pcseg.make12("(3459AB012678)")
+        ))
+        self.assertFalse(pcseg.are_combinatorial2(
+            pcseg.make12("(0126783459AB)"),
+            pcseg.make12("(0129AB345678)")
+        ))
+        self.assertTrue(pcseg.are_combinatorial3(
+            pcseg.make12("(01328B9A5476)"),
+            pcseg.make12("(67452310A9B8)"),
+            pcseg.make12("(A9B867450132)"),
+        ))
+        self.assertFalse(pcseg.are_combinatorial3(
+            pcseg.make12("(0126783459AB)"),
+            pcseg.make12("(0129AB345678)"),
+            pcseg.make12("(56780129AB34)"),
+        ))
+        self.assertTrue(pcseg.are_combinatorial4(
+            pcseg.make12("(04815926A37B)"),
+            pcseg.make12("(15926A37B048)"),
+            pcseg.make12("(26A37B048159)"),
+            pcseg.make12("(37B04815926A)"),
+        ))
+        self.assertFalse(pcseg.are_combinatorial4(
+            pcseg.make12("(04815926A37B)"),
+            pcseg.make12("(15926A37B048)"),
+            pcseg.make12("(26A37B048159)"),
+            pcseg.make12("(6A37B0481592)"),
+        ))
     
     def test_mx(self):
         """
